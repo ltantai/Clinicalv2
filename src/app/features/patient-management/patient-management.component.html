@@ -1,0 +1,51 @@
+<div>
+    <h3>Quản lý bệnh nhân</h3>
+    <div>
+        <p-table #dt [globalFilterFields]="['patientName', 'doctorName']" [value]="products" [paginator]="true"
+            [rowHover]="true" [rows]="10" [first]="0" [showCurrentPageReport]="true"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10, 25, 50]">
+            <ng-template pTemplate="caption">
+                <div class="flex justify-content-between">
+                    <p-iconField iconPosition="left">
+                        <p-inputIcon>
+                            <i class="pi pi-search"></i>
+                        </p-inputIcon>
+                        <input pInputText type="text" [(ngModel)]="searchValue" (input)="onGlobalFilter($event)"
+                            placeholder="Search..." />
+                    </p-iconField>
+                    <p-button class="add-btn" label="Thêm bệnh nhân"></p-button>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>STT</th>
+                    <th>Họ và tên</th>
+                    <th>Giới tính</th>
+                    <th>Địa chỉ</th>
+                    <th>Bác sĩ khám bệnh</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-patient>
+                <tr [pSelectableRow]="patient">
+                    <td>{{ patient.order }}</td>
+                    <td>{{ patient.patientName }}</td>
+                    <td>{{ patient.gender }}</td>
+                    <td>{{ patient.address }}</td>
+                    <td>{{ patient.doctorName }}</td>
+                    <td class="d-flex">
+                        <div class="cursor-pointer" pTooltip="Xem chi tiết" tooltipPosition="top" placeholder="Top"
+                            (click)="onOpenDetail(patient)">
+                            <span class="pi pi-eye"></span>
+                        </div>
+                        <div class="ms-5 cursor-pointer" pTooltip="Xóa" tooltipPosition="top" placeholder="Top">
+                            <span class="pi pi-trash"></span>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

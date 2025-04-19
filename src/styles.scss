@@ -1,1 +1,87 @@
 /* You can add global styles to this file, and also import other style files */
+// .p-datatable .p-datatable-tbody>tr {
+//     border-bottom: 1px solid #ddd;
+// }
+// .p-datatable .p-datatable-thead>tr {
+//     background-color: red !important;
+// }
+// .p-datatable .p-datatable-tbody>tr {
+//     border-bottom: 1px solid #ddd;
+// }
+
+// .p-datatable .p-datatable-tbody>tr:nth-child(even) {
+//     background-color: #f9f9f9;
+//     /* light gray */
+// }
+
+// .p-datatable .p-datatable-tbody>tr:nth-child(odd) {
+//     background-color: #ffffff;
+//     /* white */
+// }
+
+h3 {
+    color: #2e798f !important;
+}
+
+.p-icon-field.p-icon-field-left {
+    line-height: 0;
+}
+
+.p-inputtext:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 1px #4495ad;
+    border-color: #2e798f;
+}
+
+.p-inputtext:enabled:hover {
+    border-color: #4495ad;
+}
+
+.add-btn {
+    button {
+        border-radius: .5rem;
+    }
+}
+
+.p-datatable .p-datatable-thead>tr>th {
+    text-align: left;
+    padding: 1rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-width: 0 0 1px 0;
+    font-weight: 700;
+    color: #ffffff !important;
+    background: #2e798f !important;
+    transition: box-shadow 0.2s;
+}
+
+.p-button {
+    color: #ffffff;
+    background: #2e798f;
+    border: 1px solid #2e798f;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 6px;
+    outline-color: transparent;
+}
+
+.p-button:not(:disabled):hover {
+    background: #4495ad;
+    color: #ffffff;
+    border-color: #4495ad;
+}
+
+.p-button:not(:disabled):active {
+    background: #4495ad;
+    color: #ffffff;
+    border-color: #4495ad;
+}
+
+.p-button:focus {
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #4495ad, 0 1px 2px 0 black;
+}
+
+.p-paginator.p-component {
+    justify-content: end;
+}
