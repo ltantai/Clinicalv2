@@ -16,6 +16,8 @@ import { CommonModule } from '@angular/common';
 import { PatientDetailComponent } from './components/patient-detail/patient-detail.component';
 import { PatientFormComponent } from './components/patient-form/patient-form.component';
 import { BreadcrumbInfoModule } from '../../Libs/share-components/breadcrumb/breadcrumb.module';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 @NgModule({
   declarations: [
     PatientManagementComponent,
@@ -33,7 +35,9 @@ import { BreadcrumbInfoModule } from '../../Libs/share-components/breadcrumb/bre
     InputIconModule,
     TagModule,
     FormsModule,
-    BreadcrumbInfoModule
+    BreadcrumbInfoModule,
+    DialogModule,
+    DropdownModule
 ],
   providers: [],
   bootstrap: []

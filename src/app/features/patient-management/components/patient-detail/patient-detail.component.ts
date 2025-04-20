@@ -7,16 +7,18 @@ import { MenuItem } from 'primeng/api';
   styleUrl: './patient-detail.component.scss'
 })
 export class PatientDetailComponent implements OnInit {
- items: MenuItem[] = [
-    { label: 'Quản lý bệnh nhân',
+  visible = false;
+  items: MenuItem[] = [
+    {
+      label: 'Quản lý bệnh nhân',
       route: '/patients'
-    }, 
+    },
     { label: 'Thông tin bệnh nhân' }
   ];
 
   dataSource = {
     patientName: "Nguyễn Văn A",
-    gender: "Nam",
+    gender: {value: "Nam"},
     age: 18,
     address: "Ấp 2, Tân Lộc, Tam Bình, Vĩnh Long",
     diagnostic: {
@@ -31,6 +33,14 @@ export class PatientDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
+  }
+
+  onHide() {
+
+  }
+
+  onEdit() {
+    this.visible = true;
   }
 }

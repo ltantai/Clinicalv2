@@ -15,7 +15,7 @@
                         <input pInputText type="text" [(ngModel)]="searchValue" (input)="onGlobalFilter($event)"
                             placeholder="Search..." />
                     </p-iconField>
-                    <p-button class="add-btn" label="Thêm bệnh nhân"></p-button>
+                    <p-button class="add-btn" label="Thêm bệnh nhân" (onClick)="addNewPatient()"></p-button>
                 </div>
             </ng-template>
             <ng-template pTemplate="header">
@@ -48,4 +48,11 @@
             </ng-template>
         </p-table>
     </div>
+</div>
+
+<div>
+    <p-dialog header="Thêm bệnh nhân" [modal]="true" [(visible)]="visible" [style]="{ width: '50vw' }">
+        <span class="p-text-secondary block mb-3">Điền đầy đủ thông tin bệnh nhân <span class="fw-bold"><i>(Bắt buộc)</i></span></span>
+        <app-patient-form [isEdit]="false" (onCloseDialog)="onHide($event)"></app-patient-form>
+    </p-dialog>
 </div>
