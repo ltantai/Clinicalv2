@@ -16,7 +16,8 @@ export class PatientManagementComponent implements OnInit{
     {id: 2, order: 2,patientName: "Nguyễn Thị B",gender: "Nữ",address: "Ấp 9, Tân lộc, Tam Bình, Vĩnh Long", doctorName: "Nguyễn Đạt Nhân"},
     {id: 3, order: 3,patientName: "Huỳnh Thanh Long",gender: "Nam",address: "Ấp 9, Tân lộc, Tam Bình, Vĩnh Long", doctorName: "Nguyễn Đạt Nhân"},
   ];
-  
+
+  visible = false;
 
   constructor(
     private router: Router
@@ -33,5 +34,13 @@ export class PatientManagementComponent implements OnInit{
 
   onOpenDetail(patient: any) {
     this.router.navigate([`/patients/detail/${patient.id}`]);
+  }
+
+  onHide(event: any) {
+    this.visible = event;
+  }
+
+  addNewPatient() {
+    this.visible = true;
   }
 }

@@ -23,8 +23,16 @@ h3 {
     color: #2e798f !important;
 }
 
+.required {
+    color: red;
+}
+
 .p-icon-field.p-icon-field-left {
     line-height: 0;
+}
+
+.p-ripple.p-element.p-button.p-component.p-button-secondary.p-button-text {
+    background: grey;
 }
 
 .p-inputtext:enabled:focus {

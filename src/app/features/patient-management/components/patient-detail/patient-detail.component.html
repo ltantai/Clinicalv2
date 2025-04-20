@@ -82,10 +82,17 @@
     <!-- Actions -->
     <div class="d-flex justify-content-end">
         <div>
-            <p-button class="add-btn" label="Chỉnh sửa"></p-button>
+            <p-button class="add-btn" label="Chỉnh sửa" (onClick)="onEdit()"></p-button>
         </div>
         <!-- <div class="ms-3">
             <p-button severity="secondary" label="Xóa"></p-button>
         </div> -->
     </div>
+</div>
+
+<div>
+    <p-dialog header="Chỉnh sửa" [modal]="true" [(visible)]="visible" [style]="{ width: '50vw' }" (onHide)="onHide()">
+        <span class="p-text-secondary block mb-3">Cập nhật thông tin bệnh nhân.</span>
+        <app-patient-form [formData]="dataSource" [isEdit]="true"></app-patient-form>
+    </p-dialog>
 </div>

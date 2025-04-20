@@ -1,0 +1,16 @@
+.info-lbl {
+    font-size: 1.4rem;
+    color: #2e859f;
+    font-weight: bold;
+}
+
+:host ::ng-deep {
+    .p-dropdown-items.ng-star-inserted {
+        margin: unset !important;
+        padding: unset !important;
+    }
+
+    .p-dropdown {
+        width: 100%;
+    }
+}
