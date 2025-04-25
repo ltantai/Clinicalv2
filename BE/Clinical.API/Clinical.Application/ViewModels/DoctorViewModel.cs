@@ -1,4 +1,5 @@
-﻿using Clinical.Domain.Entitites;
+﻿using AutoMapper;
+using Clinical.Domain.Entitites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,6 @@ namespace Clinical.Application.ViewModels
         public string? Description { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
-        public ICollection<PatientViewModel>? Patients { get; set; }
+        //public ICollection<PatientViewModel>? Patients { get; set; }
     }
 }

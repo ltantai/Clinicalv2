@@ -24,9 +24,21 @@ namespace Clinical.Application.Interfaces.GenericDataService
             bool withTracking = true
         ) where T : BaseEntity;
 
+        Task<(IReadOnlyList<T> Items, int TotalCount)> GetAllPaginatedAsync<T>(
+            Expression<Func<T, bool>> condition,
+            int pageNumber,
+            int pageSize,
+            bool withTracking = true
+        ) where T : BaseEntity;
+
         Task<T> AddAsync<T>(T entity) where T : BaseEntity;
+        Task<IEnumerable<T>> AddRangeAsync<T>(IEnumerable<T> entities) where T : BaseEntity;
+
         Task<T> UpdateAsync<T>(T entity) where T : BaseEntity;
+        Task<IEnumerable<T>> UpdateRangeAsync<T>(IEnumerable<T> entities) where T : BaseEntity;
+
         Task DeleteAsync<T>(int id) where T : BaseEntity;
+        Task DeleteRangeAsync<T>(IEnumerable<int> ids) where T : BaseEntity;
 
         Task SaveChangesAsync();
     }
