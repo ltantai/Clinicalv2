@@ -1,7 +1,6 @@
 using Clinical.Api.Extensions;
-using Clinical.Application.Interfaces;
 using Clinical.Application.Interfaces.GenericDataService;
-using Clinical.Application.Services;
+using Clinical.Application.Mappers;
 using Clinical.Infrastructure.GenericDataService;
 using Clinical.Persistence.DBContext;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +13,8 @@ builder.Services.AddDbContext<ClinicalDbContext>(options =>
 // Add services to the container.
 ServiceRegistration.RegisterServices(builder.Services);
 builder.Services.AddScoped<IGenericDataService, GenericDataService>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
