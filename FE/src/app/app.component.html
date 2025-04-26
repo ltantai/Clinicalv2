@@ -17,7 +17,7 @@
             </a>
         </div>
         <!-- Content -->
-        <div class="content-container">
+        <div class="content-container" [ngClass]="{'align-menu-container':isManagementMenuOpen}">
             <div class="header-bar">
                 <div *ngIf="isManagementMenuOpen" (click)="toggleManagementMenu()" class="collapse-btn">
                     <i class="pi pi-angle-left"></i>
