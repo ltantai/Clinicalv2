@@ -17,12 +17,12 @@ namespace Clinical.Infrastructure.GenericDataService
 
         public async Task<T> GetByIdAsync<T>(int id) where T : BaseEntity
         {
-            return await _context.Set<T>().FindAsync(id);
+            return await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id && !x.IsDelete);
         }
 
         public async Task<IReadOnlyList<T>> GetAllAsync<T>(bool withTracking = true) where T : BaseEntity
         {
-            var query = _context.Set<T>().AsQueryable();
+            var query = _context.Set<T>().Where(x => !x.IsDelete).AsQueryable();
             if (!withTracking) query = query.AsNoTracking();
             return await query.ToListAsync();
         }
@@ -32,7 +32,7 @@ namespace Clinical.Infrastructure.GenericDataService
             bool withTracking = true
         ) where T : BaseEntity
         {
-            var query = _context.Set<T>().Where(condition);
+            var query = _context.Set<T>().Where(condition).Where(x => !x.IsDelete);
             if (!withTracking) query = query.AsNoTracking();
             return await query.ToListAsync();
         }
@@ -52,8 +52,7 @@ namespace Clinical.Infrastructure.GenericDataService
 
             if (!withTracking)
                 query = query.AsNoTracking();
-
-            return await query.Where(condition).ToListAsync();
+            return await query.Where(condition).Where(x => !x.IsDelete).ToListAsync();
         }
 
         //Get pagination
@@ -64,7 +63,7 @@ namespace Clinical.Infrastructure.GenericDataService
             bool withTracking = true
         ) where T : BaseEntity
         {
-            var query = _context.Set<T>().Where(condition);
+            var query = _context.Set<T>().Where(condition).Where(x => !x.IsDelete);
 
             if (!withTracking)
                 query = query.AsNoTracking();
@@ -82,24 +81,44 @@ namespace Clinical.Infrastructure.GenericDataService
 
         public async Task<T> AddAsync<T>(T entity) where T : BaseEntity
         {
+            entity.CreateTime = DateTime.Now;
+            entity.IsDelete = false;
+
             await _context.Set<T>().AddAsync(entity);
             return entity;
         }
 
         public async Task<IEnumerable<T>> AddRangeAsync<T>(IEnumerable<T> entities) where T : BaseEntity
         {
+            if (entities.Any())
+            {
+                foreach (var entity in entities)
+                {
+                    entity.CreateTime = DateTime.Now;
+                    entity.IsDelete = false;
+                }
+            }
             await _context.Set<T>().AddRangeAsync(entities);
             return entities;
         }
 
         public Task<T> UpdateAsync<T>(T entity) where T : BaseEntity
         {
+            entity.ModifyTime = DateTime.Now;
+
             _context.Set<T>().Update(entity);
             return Task.FromResult(entity);
         }
 
         public Task<IEnumerable<T>> UpdateRangeAsync<T>(IEnumerable<T> entities) where T : BaseEntity
         {
+            if (entities.Any())
+            {
+                foreach (var entity in entities)
+                {
+                    entity.ModifyTime = DateTime.Now;
+                }
+            }
             _context.Set<T>().UpdateRange(entities);
             return Task.FromResult(entities);
         }
@@ -109,7 +128,8 @@ namespace Clinical.Infrastructure.GenericDataService
             var entity = await GetByIdAsync<T>(id);
             if (entity != null)
             {
-                _context.Set<T>().Remove(entity);
+                await UpdateAsync(entity);
+                //_context.Set<T>().Remove(entity);
             }
         }
 
@@ -119,13 +139,19 @@ namespace Clinical.Infrastructure.GenericDataService
 
             if (entities.Any())
             {
-                _context.Set<T>().RemoveRange(entities);
+                await UpdateRangeAsync(entities);
+                //_context.Set<T>().RemoveRange(entities);
             }
         }
 
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        private async Task AddAuditTable()
+        {
+
         }
     }
 }
