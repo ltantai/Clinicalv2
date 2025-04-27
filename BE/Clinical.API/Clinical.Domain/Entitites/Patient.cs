@@ -18,5 +18,6 @@ namespace Clinical.Domain.Entitites
         public string? TreatmentIndication { get; set; }
         public int DoctorId { get; set; }
         public Doctor? Doctor { get; set; }
+        public ICollection<PatientPrescription>? PatientPrescriptions { get; set; }
     }
 }

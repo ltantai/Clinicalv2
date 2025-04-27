@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { PatientService } from '../../Libs/Services/patient.service';
 
 @Component({
   selector: 'app-patient-management',
@@ -20,11 +21,17 @@ export class PatientManagementComponent implements OnInit{
   visible = false;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private patientService: PatientService
   ) {}
 
   ngOnInit(): void {
-    
+    this.patientService.getAllPatients().subscribe({
+      next: (results: any) => {
+        console.log(results);
+      },
+      error: (error: any) => {console.log(error);}
+    })
   }
 
   onGlobalFilter(event: Event) {

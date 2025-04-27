@@ -20,6 +20,10 @@ namespace Clinical.Persistence.Configurations
             builder.HasOne(x => x.Doctor)
                    .WithMany(x => x.Patients)
                    .HasForeignKey(x => x.DoctorId);
+
+            builder.HasMany(x => x.PatientPrescriptions)
+                   .WithOne(x => x.Patient)
+                   .HasForeignKey(x => x.PatientId);
         }
     }
 }

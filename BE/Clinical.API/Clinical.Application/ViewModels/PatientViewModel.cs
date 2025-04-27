@@ -15,10 +15,11 @@ namespace Clinical.Application.ViewModels
         public string? Gender { get; set; }
         public string? Age { get; set; }
         public string? Address { get; set; }
-        public string? LowerLevel { get; set; }
         public string? MedicalTreatmentDepartment { get; set; }
+        public string? LowerLevel { get; set; }
         public string? TreatmentIndication { get; set; }
         public int DoctorId { get; set; }
         public DoctorViewModel? Doctor { get; set; }
+        public ICollection<PatientPrescriptionViewModel>? PatientPrescriptions { get; set; }
     }
 }
