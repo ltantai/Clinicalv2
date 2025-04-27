@@ -11,6 +11,11 @@ namespace Clinical.Application.Interfaces.GenericDataService
     public interface IGenericDataService
     {
         Task<T> GetByIdAsync<T>(int id) where T : BaseEntity;
+        Task<T?> GetByIdAsync<T>(
+            int id,
+            IList<Expression<Func<T, object?>>> includeExpressions,
+            bool withTracking = true
+        ) where T : BaseEntity;
         Task<IReadOnlyList<T>> GetAllAsync<T>(bool withTracking = true) where T : BaseEntity;
 
         Task<IReadOnlyList<T>> GetAllAsync<T>(

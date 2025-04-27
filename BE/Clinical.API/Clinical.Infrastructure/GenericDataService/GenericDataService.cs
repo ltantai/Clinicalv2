@@ -20,6 +20,25 @@ namespace Clinical.Infrastructure.GenericDataService
             return await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id && !x.IsDelete);
         }
 
+        public async Task<T?> GetByIdAsync<T>(
+            int id,
+            IList<Expression<Func<T, object?>>> includeExpressions,
+            bool withTracking = true
+        ) where T : BaseEntity
+        {
+            IQueryable<T> query = _context.Set<T>();
+
+            foreach (var include in includeExpressions)
+            {
+                query = query.Include(include);
+            }
+
+            if (!withTracking)
+                query = query.AsNoTracking();
+
+            return await query.FirstOrDefaultAsync(x => x.Id == id && !x.IsDelete);
+        }
+
         public async Task<IReadOnlyList<T>> GetAllAsync<T>(bool withTracking = true) where T : BaseEntity
         {
             var query = _context.Set<T>().Where(x => !x.IsDelete).AsQueryable();
@@ -85,6 +104,7 @@ namespace Clinical.Infrastructure.GenericDataService
             entity.IsDelete = false;
 
             await _context.Set<T>().AddAsync(entity);
+            await SaveChangesAsync();
             return entity;
         }
 
@@ -99,18 +119,21 @@ namespace Clinical.Infrastructure.GenericDataService
                 }
             }
             await _context.Set<T>().AddRangeAsync(entities);
+            await SaveChangesAsync();
             return entities;
         }
 
-        public Task<T> UpdateAsync<T>(T entity) where T : BaseEntity
+        public async Task<T> UpdateAsync<T>(T entity) where T : BaseEntity
         {
             entity.ModifyTime = DateTime.Now;
 
             _context.Set<T>().Update(entity);
-            return Task.FromResult(entity);
+
+            await SaveChangesAsync();
+            return await Task.FromResult(entity);
         }
 
-        public Task<IEnumerable<T>> UpdateRangeAsync<T>(IEnumerable<T> entities) where T : BaseEntity
+        public async Task<IEnumerable<T>> UpdateRangeAsync<T>(IEnumerable<T> entities) where T : BaseEntity
         {
             if (entities.Any())
             {
@@ -120,7 +143,8 @@ namespace Clinical.Infrastructure.GenericDataService
                 }
             }
             _context.Set<T>().UpdateRange(entities);
-            return Task.FromResult(entities);
+            await SaveChangesAsync();
+            return await Task.FromResult(entities);
         }
 
         public async Task DeleteAsync<T>(int id) where T : BaseEntity
@@ -128,9 +152,11 @@ namespace Clinical.Infrastructure.GenericDataService
             var entity = await GetByIdAsync<T>(id);
             if (entity != null)
             {
+                entity.IsDelete = true;
                 await UpdateAsync(entity);
                 //_context.Set<T>().Remove(entity);
             }
+            await SaveChangesAsync();
         }
 
         public async Task DeleteRangeAsync<T>(IEnumerable<int> ids) where T : BaseEntity
@@ -139,9 +165,14 @@ namespace Clinical.Infrastructure.GenericDataService
 
             if (entities.Any())
             {
+                foreach (var entity in entities)
+                {
+                    entity.IsDelete = false;
+                }
                 await UpdateRangeAsync(entities);
                 //_context.Set<T>().RemoveRange(entities);
             }
+            await SaveChangesAsync();
         }
 
         public async Task SaveChangesAsync()
