@@ -39,6 +39,17 @@ namespace Clinical.Infrastructure.GenericDataService
             return await query.FirstOrDefaultAsync(x => x.Id == id && !x.IsDelete);
         }
 
+        public async Task<IReadOnlyList<T>> GetAsync<T>(Expression<Func<T, bool>> predicate, bool withTracking = true) where T : BaseEntity
+        {
+            var query = _context.Set<T>().Where(x => !x.IsDelete).Where(predicate);
+
+            if (!withTracking)
+                query = query.AsNoTracking();
+
+            return await query.ToListAsync();
+        }
+
+
         public async Task<IReadOnlyList<T>> GetAllAsync<T>(bool withTracking = true) where T : BaseEntity
         {
             var query = _context.Set<T>().Where(x => !x.IsDelete).AsQueryable();
@@ -79,16 +90,34 @@ namespace Clinical.Infrastructure.GenericDataService
             Expression<Func<T, bool>> condition,
             int pageNumber,
             int pageSize,
+            IList<Expression<Func<T, object?>>>? includeExpressions = null,
             bool withTracking = true
         ) where T : BaseEntity
         {
-            var query = _context.Set<T>().Where(condition).Where(x => !x.IsDelete);
+            IQueryable<T> query = _context.Set<T>();
 
+            // Apply includes if provided
+            if (includeExpressions != null)
+            {
+                foreach (var include in includeExpressions)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            // Apply tracking setting
             if (!withTracking)
+            {
                 query = query.AsNoTracking();
+            }
 
+            // Apply filters
+            query = query.Where(condition).Where(x => !x.IsDelete);
+
+            // Total count before pagination
             var totalCount = await query.CountAsync();
 
+            // Apply pagination
             var items = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -103,9 +132,9 @@ namespace Clinical.Infrastructure.GenericDataService
             entity.CreateTime = DateTime.Now;
             entity.IsDelete = false;
 
-            await _context.Set<T>().AddAsync(entity);
+            var entry = await _context.Set<T>().AddAsync(entity);
             await SaveChangesAsync();
-            return entity;
+            return entry.Entity;
         }
 
         public async Task<IEnumerable<T>> AddRangeAsync<T>(IEnumerable<T> entities) where T : BaseEntity
@@ -130,7 +159,7 @@ namespace Clinical.Infrastructure.GenericDataService
             _context.Set<T>().Update(entity);
 
             await SaveChangesAsync();
-            return await Task.FromResult(entity);
+            return entity;
         }
 
         public async Task<IEnumerable<T>> UpdateRangeAsync<T>(IEnumerable<T> entities) where T : BaseEntity
@@ -144,7 +173,7 @@ namespace Clinical.Infrastructure.GenericDataService
             }
             _context.Set<T>().UpdateRange(entities);
             await SaveChangesAsync();
-            return await Task.FromResult(entities);
+            return entities;
         }
 
         public async Task DeleteAsync<T>(int id) where T : BaseEntity

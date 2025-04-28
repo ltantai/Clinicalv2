@@ -18,6 +18,9 @@ export class PatientFormComponent implements OnInit {
       lowerLevel: "",
       department: ""
     },
+    prescriptionForm: [
+      {medicineName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0, isDone: false}
+    ],
     treatmentIndication: "",
     doctorName: ""
   };

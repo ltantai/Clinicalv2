@@ -9,29 +9,48 @@ import { PatientService } from '../../Libs/Services/patient.service';
   templateUrl: './patient-management.component.html',
   styleUrl: './patient-management.component.scss'
 })
-export class PatientManagementComponent implements OnInit{
-  @ViewChild('dt') dt!: Table; 
+export class PatientManagementComponent implements OnInit {
+  @ViewChild('dt') dt!: Table;
   searchValue = "";
-  products = [
-    {id: 1, order: 1,patientName: "Nguyễn Văn A",gender: "Nam",address: "Ấp 2, Tân lộc, Tam Bình, Vĩnh Long", doctorName: "Nguyễn Đạt Nhân"},
-    {id: 2, order: 2,patientName: "Nguyễn Thị B",gender: "Nữ",address: "Ấp 9, Tân lộc, Tam Bình, Vĩnh Long", doctorName: "Nguyễn Đạt Nhân"},
-    {id: 3, order: 3,patientName: "Huỳnh Thanh Long",gender: "Nam",address: "Ấp 9, Tân lộc, Tam Bình, Vĩnh Long", doctorName: "Nguyễn Đạt Nhân"},
-  ];
-
+  patients: any = [];
   visible = false;
-
+  first = 0;
+  rows = 10;
+  totalRecords = 1;
   constructor(
     private router: Router,
     private patientService: PatientService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.patientService.getAllPatients().subscribe({
+    //this.loadAllPatientData(this.searchValue, this.first + 1, this.rows);
+  }
+
+  loadPatientsLazy(event: any) {
+    const page = event.first / event.rows;
+    const size = event.rows;
+    const search = this.searchValue;
+
+    this.loadAllPatientData(search, page + 1, size);
+  }
+  
+  loadAllPatientData(search: string, pageNumber: number, pageSize: number) {
+    this.patientService.getAllPaginatedPatients(search, pageNumber, pageSize).subscribe({
       next: (results: any) => {
-        console.log(results);
+        if (results.items) {
+          const data = results.items.map((item: any, index: number) => ({
+            order: index + 1,
+            patientName: item.patientName,
+            gender: item.gender,
+            address: item.address,
+            doctorName: item.doctor ? item.doctor.name : ""
+          }));
+          this.patients = data;
+          this.totalRecords = results.totalPages;
+        }
       },
-      error: (error: any) => {console.log(error);}
-    })
+      error: (error: any) => { console.log(error); }
+    });
   }
 
   onGlobalFilter(event: Event) {

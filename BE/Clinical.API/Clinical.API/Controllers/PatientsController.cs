@@ -32,11 +32,11 @@ namespace Clinical.API.Controllers
         }
 
         [HttpGet("GetPaginatedPatients")]
-        public async Task<IActionResult> GetPaginatedPatients([FromQuery] int pageNumber = 1,[FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetPaginatedPatients([FromQuery] string? search, [FromQuery] int pageNumber = 1,[FromQuery] int pageSize = 10)
         {
             try
             {
-                var patients = await _patientService.GetPaginatedPatientsAsync(u => true, pageNumber, pageSize);
+                var patients = await _patientService.GetPaginatedPatientsAsync(search ?? "", pageNumber, pageSize);
                 return Ok(patients);
             }
             catch (Exception ex)

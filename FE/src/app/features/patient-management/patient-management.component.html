@@ -1,8 +1,16 @@
 <div>
     <h3>Quản lý bệnh nhân</h3>
     <div>
-        <p-table #dt [globalFilterFields]="['patientName', 'doctorName']" [value]="products" [paginator]="true"
-            [rowHover]="true" [rows]="10" [first]="0" [showCurrentPageReport]="true"
+        <p-table #dt 
+            [globalFilterFields]="['patientName', 'doctorName']" [value]="patients"
+            [rowHover]="true"
+            [paginator]="true"
+            [lazy]="true" 
+            (onLazyLoad)="loadPatientsLazy($event)"
+            [rows]="rows" 
+            [first]="first"
+            [totalRecords]="totalRecords" 
+            [showCurrentPageReport]="true"
             [tableStyle]="{ 'min-width': '50rem' }"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [rowsPerPageOptions]="[10, 25, 50]">
