@@ -16,6 +16,9 @@ namespace Clinical.Application.Interfaces.GenericDataService
             IList<Expression<Func<T, object?>>> includeExpressions,
             bool withTracking = true
         ) where T : BaseEntity;
+
+        Task<IReadOnlyList<T>> GetAsync<T>(Expression<Func<T, bool>> predicate, bool withTracking = true) where T : BaseEntity;
+
         Task<IReadOnlyList<T>> GetAllAsync<T>(bool withTracking = true) where T : BaseEntity;
 
         Task<IReadOnlyList<T>> GetAllAsync<T>(
@@ -33,6 +36,7 @@ namespace Clinical.Application.Interfaces.GenericDataService
             Expression<Func<T, bool>> condition,
             int pageNumber,
             int pageSize,
+            IList<Expression<Func<T, object?>>>? includeExpressions = null,
             bool withTracking = true
         ) where T : BaseEntity;
 

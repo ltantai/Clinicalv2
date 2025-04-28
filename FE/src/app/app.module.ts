@@ -15,6 +15,7 @@ import { TagModule } from 'primeng/tag';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +34,8 @@ import { HttpClientModule } from '@angular/common/http';
     IconFieldModule,
     InputIconModule,
     TagModule,
-    FormsModule
+    FormsModule,
+    ProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

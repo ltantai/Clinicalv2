@@ -15,7 +15,7 @@ namespace Clinical.Application.Interfaces
     {
         Task<PatientViewModel> GetPatientById(int id);
         Task<List<PatientViewModel>> GetAllActivePatientsWithDoctor();
-        Task<PaginatedResponse<PatientViewModel>> GetPaginatedPatientsAsync( Expression<Func<Patient, bool>> condition, int pageNumber, int pageSize);
+        Task<PaginatedResponse<PatientViewModel>> GetPaginatedPatientsAsync(string search, int pageNumber, int pageSize);
         Task AddPatient(PatientInputModel patient);
         Task UpdatePatient(PatientInputModel patient);
         Task DeletePatient(int patientId);

@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class PrescriptionFormComponent implements OnInit {
   @Input() prescriptionForm:any = [
-    {medicineName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0, isDone: false}
+    {medicineName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0}
   ];
 
   isRequired = false;

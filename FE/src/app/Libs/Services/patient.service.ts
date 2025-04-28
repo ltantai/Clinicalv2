@@ -13,6 +13,10 @@ export class PatientService {
     return this.http.get<any>(`${this.baseUrl}/getall`);
   }
 
+  getAllPaginatedPatients(searchValue: string, pageNumber: number, pageSize: number){
+    return this.http.get<any>(`${this.baseUrl}/GetPaginatedPatients?search=${searchValue}&pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  }
+
   getPatientById(id: number) {
     return this.http.get<any>(`${this.baseUrl}/${id}`);
   }

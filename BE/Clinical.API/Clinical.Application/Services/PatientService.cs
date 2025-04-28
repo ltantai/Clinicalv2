@@ -42,9 +42,17 @@ namespace Clinical.Application.Services
             return result;
         }
 
-        public async Task<PaginatedResponse<PatientViewModel>> GetPaginatedPatientsAsync(Expression<Func<Patient, bool>> condition, int pageNumber, int pageSize)
+        public async Task<PaginatedResponse<PatientViewModel>> GetPaginatedPatientsAsync(string search, int pageNumber, int pageSize)
         {
-            var (patients, totalCount) = await _repository.GetAllPaginatedAsync(condition, pageNumber, pageSize);
+            search = search.Replace("\"", "").Trim();
+            var (patients, totalCount) = await _repository.GetAllPaginatedAsync(
+                x => !string.IsNullOrEmpty(x.PatientName) && x.PatientName.Contains(search),
+                pageNumber,
+                pageSize,
+                new List<Expression<Func<Patient, object?>>>
+                {
+                    x => x.Doctor
+                });
 
             var patientDtos = _mapper.Map<List<PatientViewModel>>(patients);
 
@@ -69,11 +77,31 @@ namespace Clinical.Application.Services
             newPatient.TreatmentIndication = patient.TreatmentIndication;
             newPatient.DoctorId = patient.DoctorId;
 
-            await _repository.AddAsync(newPatient);
+            newPatient = await _repository.AddAsync(newPatient);
 
-            var newPatientPrescription = new PatientPrescription();
+            if (patient.PatientPrescriptionInputModels != null && patient.PatientPrescriptionInputModels.Any())
+            {
+                var newPatientPrescriptions = new List<PatientPrescription>();
+                var patientPrescription = (await _repository.GetAsync<PatientPrescription>(x => x.Order > 0)).OrderByDescending(o => o.Order).FirstOrDefault();
+                var orderNum = patientPrescription != null ? patientPrescription.Order + 1 : 1;
 
-            await _repository.SaveChangesAsync();
+                foreach (var item in patient.PatientPrescriptionInputModels)
+                {
+                    var newPatientPrescription = new PatientPrescription();
+                    newPatientPrescription.MedicineName = item.MedicineName;
+                    newPatientPrescription.NumberOfTimesPerDay = item.NumberOfTimesPerDay;
+                    newPatientPrescription.NumberOfPillsPerDose = item.NumberOfPillsPerDose;
+                    newPatientPrescription.Order = orderNum;
+                    newPatientPrescription.PatientId = newPatient.Id;
+
+                    newPatientPrescriptions.Add(newPatientPrescription);
+                }
+
+                if (newPatientPrescriptions.Any())
+                {
+                   await _repository.AddRangeAsync(newPatientPrescriptions);
+                }
+            }
         }
 
         public async Task UpdatePatient(PatientInputModel patient)
