@@ -82,8 +82,8 @@ namespace Clinical.Application.Services
             if (patient.PatientPrescriptionInputModels != null && patient.PatientPrescriptionInputModels.Any())
             {
                 var newPatientPrescriptions = new List<PatientPrescription>();
-                var patientPrescription = (await _repository.GetAsync<PatientPrescription>(x => x.Order > 0)).OrderByDescending(o => o.Order).FirstOrDefault();
-                var orderNum = patientPrescription != null ? patientPrescription.Order + 1 : 1;
+                //var patientPrescription = (await _repository.GetAsync<PatientPrescription>(x => x.Order > 0)).OrderByDescending(o => o.Order).FirstOrDefault();
+                //var orderNum = patientPrescription != null ? patientPrescription.Order + 1 : 1;
 
                 foreach (var item in patient.PatientPrescriptionInputModels)
                 {
@@ -91,7 +91,7 @@ namespace Clinical.Application.Services
                     newPatientPrescription.MedicineName = item.MedicineName;
                     newPatientPrescription.NumberOfTimesPerDay = item.NumberOfTimesPerDay;
                     newPatientPrescription.NumberOfPillsPerDose = item.NumberOfPillsPerDose;
-                    newPatientPrescription.Order = orderNum;
+                    newPatientPrescription.Order = 1;
                     newPatientPrescription.PatientId = newPatient.Id;
 
                     newPatientPrescriptions.Add(newPatientPrescription);

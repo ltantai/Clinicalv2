@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { PatientService } from '../../../../Libs/Services/patient.service';
 
 @Component({
   selector: 'app-patient-form',
@@ -11,7 +12,7 @@ export class PatientFormComponent implements OnInit {
   @Input() isEdit = false;
   @Input() formData: any = {
     patientName: "",
-    gender: {value: ""},
+    gender: {value: "Nữ"},
     age: 1,
     address: "",
     diagnostic: {
@@ -19,20 +20,25 @@ export class PatientFormComponent implements OnInit {
       department: ""
     },
     prescriptionForm: [
-      {medicineName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0, isDone: false}
+      {id: 0, medicineName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0, order: 0, patientId: 0}
     ],
     treatmentIndication: "",
     doctorName: ""
   };
-
   genders = [
     { value: 'Nam'},
     { value: 'Nữ'},
     { value: 'Khác'},
-];
-  
+  ];
+  patients: any[] = [
+    {id: 1, name: "Lê Đạt Nhân"},
+    {id: 2, name: "Lê Tấn Tài"}
+  ];
+  selectedPatient: any;
+
   constructor(
-    private router: Router
+    private router: Router,
+    private patientService: PatientService
   ) {
     
   }
@@ -54,8 +60,26 @@ export class PatientFormComponent implements OnInit {
   
   onSave() {
     console.log(this.formData);
-    
-    this.onCloseDialog.emit(false);
-    this.router.navigate(["/patients"]);
+
+    const form = {
+      id: 0,
+      patientName: this.formData.patientName,
+      gender: this.formData.gender.value,
+      age: this.formData.age,
+      address: this.formData.address,
+      lowerLevel: this.formData.diagnostic.lowerLevel,
+      medicalTreatmentDepartment: this.formData.diagnostic.department,
+      treatmentIndication: this.formData.treatmentIndication,
+      doctorId: this.selectedPatient.id,
+      patientPrescriptionInputModels: this.formData.prescriptionForm
+    }
+
+    this.patientService.createPatient(form).subscribe({
+      next: () => {
+        this.onCloseDialog.emit(false);
+        this.router.navigate(["/patients"]);
+      },
+      error: (error: any) => {console.log(error);}
+    });
   }
 }
