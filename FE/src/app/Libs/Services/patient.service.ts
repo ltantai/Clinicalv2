@@ -22,7 +22,7 @@ export class PatientService {
   }
 
   createPatient(patientData: any) {
-    return this.http.post(`${this.baseUrl}`, patientData);
+    return this.http.post(`${this.baseUrl}/add`, patientData);
   }
 
   updatePatient(id: number, patientData: any){

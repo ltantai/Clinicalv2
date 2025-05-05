@@ -63,9 +63,28 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-12 col-xs-12">
-                <label class="fw-bold">Họ và tên bác sĩ khám bệnh <span class="required">*</span></label>
+                <label class="fw-bold">Bác sĩ khám bệnh <span class="required">*</span></label>
                 <div>
-                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.doctorName" placeholder="Nhập tên bác sĩ khám bệnh...">
+                    <!-- <input class="w-100" pInputText type="text" [(ngModel)]="formData.doctorName" placeholder="Nhập tên bác sĩ khám bệnh..."> -->
+                    <p-dropdown 
+                        [options]="patients"
+                        [(ngModel)]="selectedPatient"
+                        optionLabel="name"
+                        [filter]="true"
+                        filterBy="name" 
+                        [showClear]="true"
+                        placeholder="Nhập tên bác sĩ khám bệnh...">
+                            <!-- <ng-template pTemplate="selectedItem" let-selectedOption>
+                                <div class="flex align-items-center gap-2">
+                                    <div>{{ selectedOption.name }}</div>
+                                </div>
+                            </ng-template> -->
+                            <ng-template let-patient pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                    <div>{{ patient.name }}</div>
+                                </div>
+                            </ng-template>
+                    </p-dropdown>
                 </div>
             </div>
         </div>
