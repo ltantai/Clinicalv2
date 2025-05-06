@@ -181,6 +181,7 @@ namespace Clinical.Infrastructure.GenericDataService
             var entity = await GetByIdAsync<T>(id);
             if (entity != null)
             {
+                entity.ModifyTime = DateTime.Now;
                 entity.IsDelete = true;
                 await UpdateAsync(entity);
                 //_context.Set<T>().Remove(entity);
@@ -196,7 +197,8 @@ namespace Clinical.Infrastructure.GenericDataService
             {
                 foreach (var entity in entities)
                 {
-                    entity.IsDelete = false;
+                    entity.ModifyTime = DateTime.Now;
+                    entity.IsDelete = true;
                 }
                 await UpdateRangeAsync(entities);
                 //_context.Set<T>().RemoveRange(entities);
