@@ -1,7 +1,7 @@
 <div class="bread-crumb">
     <app-breadcrumb [items]="items"></app-breadcrumb>
 </div>
-<div class="patient-detail-container">
+<div class="patient-detail-container" *ngIf="dataSource">
     <div class="row">
         <div class="col-lg-6 col-md-6 col-xs-12">
             <div class="patient-info mb-3">
@@ -16,7 +16,7 @@
                     <div class="ms-5">
                         <label class="fw-bold">Giới tính:</label>
                         <div>
-                            {{dataSource.gender.value}}
+                            {{dataSource.gender}}
                         </div>
                     </div>
                     <div class="ms-5">
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                 </div>
-        
+
                 <div class="address ps-3 mt-2">
                     <label class="fw-bold">Địa chỉ:</label>
                     <div>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-        
+
             <div class="diagnostic mb-3">
                 <div class="info-lbl">
                     Chuẩn đoán:
@@ -43,41 +43,20 @@
                     <div class="mt-2">
                         <label class="fw-bold">Tuyến dưới:</label>
                         <div>
-                            {{dataSource.diagnostic.lowerLevel}}
+                            {{dataSource.lowerLevel}}
                         </div>
                     </div>
                     <div class="mt-2">
                         <label class="fw-bold">Khoa khám bệnh:</label>
                         <div>
-                            {{dataSource.diagnostic.department}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TODO:: Need to implement -->
-            <div class="prescription mb-3">
-                <div class="info-lbl">
-                    Đơn thuốc:
-                </div>
-                <div class="mt-3 ps-3">
-                    <div class="mt-2">
-                        <label class="fw-bold">Tuyến dưới:</label>
-                        <div>
-                            {{dataSource.diagnostic.lowerLevel}}
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <label class="fw-bold">Khoa khám bệnh:</label>
-                        <div>
-                            {{dataSource.diagnostic.department}}
+                            {{dataSource.medicalTreatmentDepartment}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-6 col-md-6 col-xs-12">
-            <div>
+            <div *ngIf="dataSource.doctor">
                 <div class="info-lbl">
                     Điều trị:
                 </div>
@@ -88,13 +67,56 @@
                             {{dataSource.treatmentIndication}}
                         </div>
                     </div>
-                
+
                     <div class="doctor-info mt-2">
                         <label class="fw-bold">Họ và tên bác sĩ khám bệnh:</label>
                         <div class="">
-                            {{dataSource.doctorName}}
+                            {{dataSource.doctor.name}}
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="prescription mb-3">
+            <div class="d-flex">
+                <div class="info-lbl">
+                    Đơn thuốc:
+                </div>
+                <div class="ms-3">
+                    <p-button class="add-btn add-prescription-btn" label="Thêm mới" (onClick)="addPrescription()"></p-button>
+                </div>
+            </div>
+           
+            <div class="mt-3 ps-3">
+                <div *ngIf="!dataSource.patientPrescriptions || (dataSource.patientPrescriptions && dataSource.patientPrescriptions.length === 0)">
+                    <i>Hiện tại bệnh nhân chưa có bất kì đơn thuốc nào!</i>
+                </div>
+                <div *ngIf="dataSource.patientPrescriptions && dataSource.patientPrescriptions.length > 0">
+                    <p-table [value]="dataSource.patientPrescriptions" [paginator]="true" [rows]="5"
+                        [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20]">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width:50%">Thời gian tạo hóa đơn</th>
+                                <th style="width:25%">Số thứ tự</th>
+                                <th style="width:25%"></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-prescription>
+                            <tr>
+                                <td>{{ formatTime(prescription.createTime) }}</td>
+                                <td>{{ prescription.order }}</td>
+                                <td>
+                                    <div class="cursor-pointer text-center" pTooltip="Xem chi tiết"
+                                        tooltipPosition="top" placeholder="Top" (click)="onOpenDetail(prescription)">
+                                        <span class="pi pi-eye"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
                 </div>
             </div>
         </div>
@@ -111,9 +133,37 @@
     </div>
 </div>
 
-<div>
-    <p-dialog header="Chỉnh sửa" [modal]="true" [(visible)]="visible" [style]="{ width: '50vw' }" (onHide)="onHide()">
+<div *ngIf="visible">
+    <p-dialog [appendTo]="'body'" header="Chỉnh sửa" [modal]="true" [(visible)]="visible" [style]="{ width: '50vw'}" (onHide)="onHide()">
         <span class="p-text-secondary block mb-3">Cập nhật thông tin bệnh nhân.</span>
-        <app-patient-form [formData]="dataSource" [isEdit]="true"></app-patient-form>
+        <app-patient-form [formData]="formData" [isEdit]="true"></app-patient-form>
+    </p-dialog>
+</div>
+
+<div *ngIf="prescriptionVisible">
+    <p-dialog header="Đơn thuốc chi tiết" [modal]="true" [(visible)]="prescriptionVisible" [style]="{ width: '50vw' }">
+        <div *ngIf="preScriptionDetail.length > 0">
+            <div class="p-text-secondary block mb-1">Thông tin đơn thuốc: {{preScriptionDetail[0].order}}</div>
+            <div class="p-text-secondary block mb-5">Ngày tạo đơn thuốc:
+                {{formatTime(preScriptionDetail[0].createTime)}}</div>
+            <div class="mt-3" *ngFor="let item of preScriptionDetail; index as i">
+                <div class="flex align-items-center gap-3 mb-3">
+                    <label class="font-semibold">{{i + 1}}. Tên thuốc</label>
+                    <div class="medicineName"> {{item.medicineName}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-xs-12">
+                        <div class="flex align-items-center gap-3 mb-3">
+                            <label class="font-semibold">Ngày uống:</label> {{item.numberOfTimesPerDay}}<i>(lần)</i>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12">
+                        <div class="flex align-items-center gap-3 mb-3">
+                            <label class="font-semibold">Mỗi lần:</label> {{item.numberOfPillsPerDose}}<i>(viên)</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </p-dialog>
 </div>

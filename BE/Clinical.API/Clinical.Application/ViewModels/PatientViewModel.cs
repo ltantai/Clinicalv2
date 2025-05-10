@@ -22,4 +22,5 @@ namespace Clinical.Application.ViewModels
         public DoctorViewModel? Doctor { get; set; }
         public ICollection<PatientPrescriptionViewModel>? PatientPrescriptions { get; set; }
     }
+
 }

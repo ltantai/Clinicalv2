@@ -67,8 +67,8 @@
                 <div>
                     <!-- <input class="w-100" pInputText type="text" [(ngModel)]="formData.doctorName" placeholder="Nhập tên bác sĩ khám bệnh..."> -->
                     <p-dropdown 
-                        [options]="patients"
-                        [(ngModel)]="selectedPatient"
+                        [options]="doctors"
+                        [(ngModel)]="selectedDoctor"
                         optionLabel="name"
                         [filter]="true"
                         filterBy="name" 
@@ -79,9 +79,9 @@
                                     <div>{{ selectedOption.name }}</div>
                                 </div>
                             </ng-template> -->
-                            <ng-template let-patient pTemplate="item">
+                            <ng-template let-doctor pTemplate="item">
                                 <div class="flex align-items-center gap-2">
-                                    <div>{{ patient.name }}</div>
+                                    <div>{{ doctor.name }}</div>
                                 </div>
                             </ng-template>
                     </p-dropdown>

@@ -18,7 +18,11 @@ export class PatientService {
   }
 
   getPatientById(id: number) {
-    return this.http.get<any>(`${this.baseUrl}/${id}`);
+    return this.http.get<any>(`${this.baseUrl}/GetPatientById/${id}`);
+  }
+
+  getPrescriptionDetail(order: number, patientId: number) {
+    return this.http.get<any>(`${this.baseUrl}/GetPrescriptionDetail?order=${order}&patientId=${patientId}`);
   }
 
   createPatient(patientData: any) {

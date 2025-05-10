@@ -11,6 +11,8 @@ namespace Clinical.Application.Mappers
             // Define your mappings here
             CreateMap<Patient, PatientViewModel>().ReverseMap();
             CreateMap<Doctor, DoctorViewModel>().ReverseMap();
+            CreateMap<PatientPrescription, PatientPrescriptionViewModel>().ReverseMap();
+
             // Add more mappings as needed
         }
     }

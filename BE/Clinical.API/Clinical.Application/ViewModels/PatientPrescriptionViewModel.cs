@@ -16,5 +16,6 @@ namespace Clinical.Application.ViewModels
         public int? NumberOfPillsPerDose { get; set; }
         public int Order { get; set; }
         public int PatientId { get; set; }
+        public DateTime? CreateTime { get; set; }
     }
 }

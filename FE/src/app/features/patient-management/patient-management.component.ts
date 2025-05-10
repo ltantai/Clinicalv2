@@ -39,6 +39,7 @@ export class PatientManagementComponent implements OnInit {
       next: (results: any) => {
         if (results.items) {
           const data = results.items.map((item: any, index: number) => ({
+            id: item.id,
             order: index + 1,
             patientName: item.patientName,
             gender: item.gender,

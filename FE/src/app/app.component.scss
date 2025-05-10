@@ -11,7 +11,7 @@ body {
   .sidebar {
     width: 300px;
     min-width: 300px;
-    background-color: #ffffff;
+    //background-color: #ffffff;
     color: black;
     height: 100vh; // full height for sidebar
     position: fixed; // keep it fixed while scrolling
@@ -19,16 +19,17 @@ body {
     left: 0;
     overflow: hidden;
     z-index: 10;
-
+    background: linear-gradient(0deg, var(--primary-background-color), transparent);
+    box-shadow: 0px 1px 10px #00485e;
     .tilte-header {
       margin-left: 1rem;
-      color: grey;
+      color: #0c546a;
       font-size: .9rem;
     }
   }
 
   .sidebar a {
-    color: black;
+    color: #ffffff;
     text-decoration: none;
     display: block;
     padding: 15px 20px;
@@ -37,7 +38,7 @@ body {
 
   .sidebar a.active {
     background-color: #d0e4ff;
-    color: #1890ff;
+    color: var(--primary-color);
     border-right: 2px solid;
   }
 
@@ -54,7 +55,8 @@ body {
   .sidebar h3 {
     padding: 20px;
     margin-bottom: 0;
-    background-color: white;
+    //background-color: white;
+    background: linear-gradient(0deg, #e7eef0, transparent);
   }
 
   // Content 
@@ -69,7 +71,7 @@ body {
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
-
+    background: linear-gradient(0deg, var(--primary-background-color), transparent);
     .menu-group {
       overflow: hidden;
       transition: max-height 0.5s ease;

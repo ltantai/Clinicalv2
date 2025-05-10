@@ -46,6 +46,36 @@ namespace Clinical.API.Controllers
 
         }
 
+        [HttpGet("GetPatientById/{id}")]
+        public async Task<IActionResult> GetPatientById([FromRoute] int id)
+        {
+            try
+            {
+                var results = await _patientService.GetPatientById(id);
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error while getting patient detail");
+            }
+
+        }
+
+        [HttpGet("GetPrescriptionDetail")]
+        public async Task<IActionResult> GetPrescriptionDetail([FromQuery] int order, [FromQuery] int patientId)
+        {
+            try
+            {
+                var results = await _patientService.GetPrescriptionDetail(order, patientId);
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error while getting all prescriptions");
+            }
+
+        }
+
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] PatientInputModel model)
         {

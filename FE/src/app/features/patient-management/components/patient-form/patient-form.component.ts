@@ -10,9 +10,26 @@ import { PatientService } from '../../../../Libs/Services/patient.service';
 export class PatientFormComponent implements OnInit {
   @Output() onCloseDialog = new EventEmitter();
   @Input() isEdit = false;
+  // @Input() set data(value: any) {
+  //   if (value) {
+  //     this.formData = {
+  //       patientName: value.patientName,
+  //       gender: value.gender,
+  //       age: value.age,
+  //       address: value.address,
+  //       diagnostic: value.diagnostic,
+  //       prescriptionForm: value.prescriptionForm,
+  //       treatmentIndication: value.treatmentIndication,
+  //       doctorId: value.doctorId
+  //     };
+
+  //     if (this.formData.doctorId) {}
+  //   }
+  // }
+
   @Input() formData: any = {
     patientName: "",
-    gender: {value: "Nữ"},
+    gender: { value: "Nữ" },
     age: 1,
     address: "",
     diagnostic: {
@@ -20,31 +37,40 @@ export class PatientFormComponent implements OnInit {
       department: ""
     },
     prescriptionForm: [
-      {id: 0, medicineName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0, order: 0, patientId: 0}
+      { id: 0, medicineName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0, order: 0, patientId: 0 }
     ],
     treatmentIndication: "",
-    doctorName: ""
+    doctorId: 0
   };
+
   genders = [
-    { value: 'Nam'},
-    { value: 'Nữ'},
-    { value: 'Khác'},
+    { value: 'Nam' },
+    { value: 'Nữ' },
+    { value: 'Khác' },
   ];
-  patients: any[] = [
-    {id: 1, name: "Lê Đạt Nhân"},
-    {id: 2, name: "Lê Tấn Tài"}
+
+  doctors: any[] = [
+    { id: 1, name: "L1" },
+    { id: 2, name: "Lê Đạt Nhân" }
   ];
-  selectedPatient: any;
+
+  selectedDoctor: any;
 
   constructor(
     private router: Router,
     private patientService: PatientService
   ) {
-    
+
   }
 
   ngOnInit(): void {
-    
+    this.setDoctorFieldValue();
+  }
+
+  setDoctorFieldValue () {
+    if (this.formData.doctorId > 0) {
+      this.selectedDoctor = this.doctors.find((item: any) => item.id === this.formData.doctorId);
+    }
   }
 
   preventDecimalInput(event: KeyboardEvent) {
@@ -57,10 +83,8 @@ export class PatientFormComponent implements OnInit {
   onCancel() {
 
   }
-  
-  onSave() {
-    console.log(this.formData);
 
+  onSave() {
     const form = {
       id: 0,
       patientName: this.formData.patientName,
@@ -70,7 +94,7 @@ export class PatientFormComponent implements OnInit {
       lowerLevel: this.formData.diagnostic.lowerLevel,
       medicalTreatmentDepartment: this.formData.diagnostic.department,
       treatmentIndication: this.formData.treatmentIndication,
-      doctorId: this.selectedPatient.id,
+      doctorId: this.selectedDoctor.id,
       patientPrescriptionInputModels: this.formData.prescriptionForm
     }
 
@@ -79,7 +103,7 @@ export class PatientFormComponent implements OnInit {
         this.onCloseDialog.emit(false);
         this.router.navigate(["/patients"]);
       },
-      error: (error: any) => {console.log(error);}
+      error: (error: any) => { console.log(error); }
     });
   }
 }
