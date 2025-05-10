@@ -20,5 +20,6 @@ namespace Clinical.Application.Interfaces
         Task UpdatePatient(PatientInputModel patient);
         Task DeletePatient(int patientId);
         Task<List<PatientPrescriptionViewModel>> GetPrescriptionByTimeline(string dateFrom, string dateTo);
+        Task<List<PatientPrescriptionViewModel>> GetPrescriptionDetail(int order, int patientId);
     }
 }

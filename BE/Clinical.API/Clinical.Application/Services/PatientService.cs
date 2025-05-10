@@ -51,7 +51,7 @@ namespace Clinical.Application.Services
                 pageSize,
                 new List<Expression<Func<Patient, object?>>>
                 {
-                    x => x.Doctor
+                    x => x.Doctor,
                 });
 
             var patientDtos = _mapper.Map<List<PatientViewModel>>(patients);
@@ -129,20 +129,50 @@ namespace Clinical.Application.Services
         {
             var patient = await _repository.GetByIdAsync(id, new List<Expression<Func<Patient, object?>>>
                 {
+                    p => p.Doctor,
                     p => p.PatientPrescriptions
                 }) ?? throw new Exception("Patient detail is not found");
+
+            if (patient.PatientPrescriptions != null &&  patient.PatientPrescriptions.Any())
+            {
+                patient.PatientPrescriptions = patient.PatientPrescriptions.DistinctBy(x => x.Order).ToList();
+            }
             var result = _mapper.Map<PatientViewModel>(patient);
             return result;
         }
 
         public async Task<List<PatientPrescriptionViewModel>> GetPrescriptionByTimeline(string dateFrom, string dateTo)
         {
-            DateTime startDate = DateTime.ParseExact(dateFrom, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            DateTime endDate = (DateTime.ParseExact(dateTo, "dd/MM/yyyy", CultureInfo.InvariantCulture)).Date.AddDays(1).AddTicks(-1);
-            var data = await _repository.GetAllAsync<PatientPrescription>(condition: x => x.CreateTime >= startDate && endDate <= x.CreateTime);
+            try
+            {
+                DateTime startDate = DateTime.ParseExact(dateFrom, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DateTime endDate = (DateTime.ParseExact(dateTo, "dd/MM/yyyy", CultureInfo.InvariantCulture)).Date.AddDays(1).AddTicks(-1);
+                var data = await _repository.GetAllAsync<PatientPrescription>(condition: x => x.CreateTime >= startDate && endDate <= x.CreateTime);
 
-            var result = _mapper.Map<List<PatientPrescriptionViewModel>>(data);
-            return result;
+                var result = _mapper.Map<List<PatientPrescriptionViewModel>>(data);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public async Task<List<PatientPrescriptionViewModel>> GetPrescriptionDetail(int order, int patientId)
+        {
+            try
+            {
+                var data = await _repository.GetAllAsync<PatientPrescription>(condition: x => x.Order == order && patientId == x.PatientId);
+
+                var result = _mapper.Map<List<PatientPrescriptionViewModel>>(data);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
     }
 }

@@ -20,7 +20,7 @@
 // }
 
 h3 {
-    color: #2e798f !important;
+    color: var(--primary-color) !important;
 }
 
 .required {
@@ -38,17 +38,17 @@ h3 {
 .p-inputtext:enabled:focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 1px #4495ad;
+    box-shadow: 0 0 0 1px var(--border-color);
     border-color: #2e798f;
 }
 
 .p-inputtext:enabled:hover {
-    border-color: #4495ad;
+    border-color: var(--border-color);
 }
 
 .add-btn {
     button {
-        border-radius: .5rem;
+        border-radius: 2rem;
     }
 }
 
@@ -59,14 +59,14 @@ h3 {
     border-width: 0 0 1px 0;
     font-weight: 700;
     color: #ffffff !important;
-    background: #2e798f !important;
+    background: var(--primary-color) !important;
     transition: box-shadow 0.2s;
 }
 
 .p-button {
     color: #ffffff;
-    background: #2e798f;
-    border: 1px solid #2e798f;
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
     padding: 0.75rem 1.25rem;
     font-size: 1rem;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
@@ -75,19 +75,19 @@ h3 {
 }
 
 .p-button:not(:disabled):hover {
-    background: #4495ad;
+    background: var(--border-color);
     color: #ffffff;
-    border-color: #4495ad;
+    border-color: var(--border-color);
 }
 
 .p-button:not(:disabled):active {
-    background: #4495ad;
+    background: var(--border-color);
     color: #ffffff;
-    border-color: #4495ad;
+    border-color: var(--border-color);
 }
 
 .p-button:focus {
-    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #4495ad, 0 1px 2px 0 black;
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--border-color), 0 1px 2px 0 black;
 }
 
 .p-paginator.p-component {
