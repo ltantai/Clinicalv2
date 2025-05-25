@@ -92,7 +92,60 @@ namespace Clinical.API.Controllers
             {
                 return StatusCode(500, "Error while adding patient into database");
             }
+        }
 
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update([FromBody] PatientInputModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                await _patientService.UpdatePatient(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error while adding patient into database");
+            }
+        }
+
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            try
+            {
+                if (id <= 0)
+                {
+                    return BadRequest("Data Invalid");
+                }
+                await _patientService.DeletePatient(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error while adding patient into database");
+            }
+        }
+
+        [HttpPost("AddPresciptionForPatient")]
+        public async Task<IActionResult> AddPresciptionForPatient([FromBody] PrescriptiondetailInputModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                await _patientService.AddPrescriptionForPatient(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error while adding prescription for patient into database");
+            }
         }
     }
 }

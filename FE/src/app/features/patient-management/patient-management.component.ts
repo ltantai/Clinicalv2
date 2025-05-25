@@ -47,7 +47,7 @@ export class PatientManagementComponent implements OnInit {
             doctorName: item.doctor ? item.doctor.name : ""
           }));
           this.patients = data;
-          this.totalRecords = results.totalPages;
+          this.totalRecords = results.totalCount;
         }
       },
       error: (error: any) => { console.log(error); }
@@ -59,12 +59,18 @@ export class PatientManagementComponent implements OnInit {
     this.dt.filterGlobal(value, 'contains');
   }
 
+  pageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
+  }
+
   onOpenDetail(patient: any) {
     this.router.navigate([`/patients/detail/${patient.id}`]);
   }
 
   onHide(event: any) {
     this.visible = event;
+    this.loadAllPatientData(this.searchValue, this.first + 1, this.rows);
   }
 
   addNewPatient() {

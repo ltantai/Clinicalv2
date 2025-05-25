@@ -17,6 +17,7 @@ namespace Clinical.Application.InputModels
         public string? MedicalTreatmentDepartment { get; set; }
         public string? TreatmentIndication { get; set; }
         public int DoctorId { get; set; }
+        public string? Note { get; set; }
         public ICollection<PatientPrescriptionInputModel>? PatientPrescriptionInputModels { get; set; }
     }
 }

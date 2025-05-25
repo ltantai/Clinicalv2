@@ -12,7 +12,11 @@ import { formatDate } from '@angular/common';
 export class PatientDetailComponent implements OnInit {
   visible = false;
   prescriptionVisible = false;
-
+  prescriptionFormVisible = false;
+  prescriptionForm: any = {
+    note: "",
+    form:[{medicinName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0}]
+  };
   items: MenuItem[] = [
     {
       label: 'Quản lý bệnh nhân',
@@ -24,6 +28,7 @@ export class PatientDetailComponent implements OnInit {
   dataSource: any = {};
   formData: any = {};
   preScriptionDetail: any[] = [];
+  patientId = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,9 +41,9 @@ export class PatientDetailComponent implements OnInit {
   }
 
   loadPatientDetail() {
-    const patientId = this.route.snapshot.paramMap.get("id") ?? "";
-    if (patientId) {
-      const id = Number(patientId) ?? 0;
+    this.patientId = Number(this.route.snapshot.paramMap.get("id")) ?? 0;
+    if (this.patientId) {
+      const id = Number(this.patientId) ?? 0;
       this.patientService.getPatientById(id).subscribe({
         next: (data: any) => {
           this.dataSource = data;
@@ -91,6 +96,35 @@ export class PatientDetailComponent implements OnInit {
   }
 
   addPrescription() {
-    
+    this.prescriptionFormVisible = true;
+  }
+
+  resetValue() {
+    this.prescriptionForm = {
+      note: "",
+      form:[{medicinName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0}]
+    };
+    this.prescriptionFormVisible = false;
+  }
+
+  onCancel() {
+
+  }
+
+  onSave() {
+    const form = {
+      id: 0,
+      patientId: this.patientId,
+      note: this.prescriptionForm.note,
+      patientPrescriptionInputModels: this.prescriptionForm.form
+    }    
+
+    this.patientService.addPrescriptionForPatient(form).subscribe({
+      next: () => {
+        this.resetValue();
+        this.loadPatientDetail(); 
+      },
+      error: (error: any) => { console.log(error); }
+    });
   }
 }
