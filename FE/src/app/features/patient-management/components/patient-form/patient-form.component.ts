@@ -10,23 +10,6 @@ import { PatientService } from '../../../../Libs/Services/patient.service';
 export class PatientFormComponent implements OnInit {
   @Output() onCloseDialog = new EventEmitter();
   @Input() isEdit = false;
-  // @Input() set data(value: any) {
-  //   if (value) {
-  //     this.formData = {
-  //       patientName: value.patientName,
-  //       gender: value.gender,
-  //       age: value.age,
-  //       address: value.address,
-  //       diagnostic: value.diagnostic,
-  //       prescriptionForm: value.prescriptionForm,
-  //       treatmentIndication: value.treatmentIndication,
-  //       doctorId: value.doctorId
-  //     };
-
-  //     if (this.formData.doctorId) {}
-  //   }
-  // }
-
   @Input() formData: any = {
     patientName: "",
     gender: { value: "Nữ" },
@@ -36,11 +19,10 @@ export class PatientFormComponent implements OnInit {
       lowerLevel: "",
       department: ""
     },
-    prescriptionForm: [
-      { id: 0, medicineName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0, order: 0, patientId: 0 }
-    ],
+    prescriptionForm: [],
     treatmentIndication: "",
-    doctorId: 0
+    doctorId: 0,
+    note: ""
   };
 
   genders = [
@@ -80,8 +62,33 @@ export class PatientFormComponent implements OnInit {
     }
   }
 
-  onCancel() {
+  resetValue() {
+    this.formData = {  patientName: "",  gender: { value: "Nữ" },  age: 1, address: "",
+      diagnostic: {
+        lowerLevel: "",
+        department: ""
+      },
+      prescriptionForm: [],
+      treatmentIndication: "", doctorId: 0, note: ""
+    };
+    this.genders = [
+      { value: 'Nam' },
+      { value: 'Nữ' },
+      { value: 'Khác' },
+    ];
 
+    this.doctors = [
+      { id: 1, name: "L1" },
+      { id: 2, name: "Lê Đạt Nhân" }
+    ];
+
+    this.selectedDoctor = null;
+    this.onCloseDialog.emit(false);
+    this.router.navigate(["/patients"]);
+  }
+
+  onCancel() {
+    this.resetValue();
   }
 
   onSave() {
@@ -95,13 +102,13 @@ export class PatientFormComponent implements OnInit {
       medicalTreatmentDepartment: this.formData.diagnostic.department,
       treatmentIndication: this.formData.treatmentIndication,
       doctorId: this.selectedDoctor.id,
+      note: this.formData.note,
       patientPrescriptionInputModels: this.formData.prescriptionForm
     }
 
     this.patientService.createPatient(form).subscribe({
       next: () => {
-        this.onCloseDialog.emit(false);
-        this.router.navigate(["/patients"]);
+        this.resetValue();
       },
       error: (error: any) => { console.log(error); }
     });

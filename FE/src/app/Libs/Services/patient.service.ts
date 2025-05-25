@@ -36,4 +36,8 @@ export class PatientService {
   deletePatient(id: number) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+
+  addPrescriptionForPatient(formData: any) {
+    return this.http.post(`${this.baseUrl}/AddPresciptionForPatient`, formData);
+  }
 }

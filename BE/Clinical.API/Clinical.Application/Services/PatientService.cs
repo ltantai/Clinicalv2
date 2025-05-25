@@ -76,15 +76,11 @@ namespace Clinical.Application.Services
             newPatient.MedicalTreatmentDepartment = patient.MedicalTreatmentDepartment;
             newPatient.TreatmentIndication = patient.TreatmentIndication;
             newPatient.DoctorId = patient.DoctorId;
-
             newPatient = await _repository.AddAsync(newPatient);
 
             if (patient.PatientPrescriptionInputModels != null && patient.PatientPrescriptionInputModels.Any())
             {
                 var newPatientPrescriptions = new List<PatientPrescription>();
-                //var patientPrescription = (await _repository.GetAsync<PatientPrescription>(x => x.Order > 0)).OrderByDescending(o => o.Order).FirstOrDefault();
-                //var orderNum = patientPrescription != null ? patientPrescription.Order + 1 : 1;
-
                 foreach (var item in patient.PatientPrescriptionInputModels)
                 {
                     var newPatientPrescription = new PatientPrescription();
@@ -92,6 +88,7 @@ namespace Clinical.Application.Services
                     newPatientPrescription.NumberOfTimesPerDay = item.NumberOfTimesPerDay;
                     newPatientPrescription.NumberOfPillsPerDose = item.NumberOfPillsPerDose;
                     newPatientPrescription.Order = 1;
+                    newPatientPrescription.Note = patient.Note;
                     newPatientPrescription.PatientId = newPatient.Id;
 
                     newPatientPrescriptions.Add(newPatientPrescription);
@@ -173,6 +170,41 @@ namespace Clinical.Application.Services
                 throw;
             }
 
+        }
+
+        public async Task AddPrescriptionForPatient(PrescriptiondetailInputModel model)
+        {
+            try
+            {
+                var existingPatient = await _repository.GetByIdAsync<Patient>(model.PatientId) ?? throw new Exception("Patient not found");
+                var existingPrescriptions = await _repository.GetAllAsync<PatientPrescription>(x => x.PatientId == existingPatient.Id);
+                var maxOrder = existingPrescriptions.Any() ? existingPrescriptions.Max(x => x.Order) : 0;
+                if (model.PatientPrescriptionInputModels != null && model.PatientPrescriptionInputModels.Any())
+                {
+                    var newPatientPrescriptions = new List<PatientPrescription>();
+                    foreach (var item in model.PatientPrescriptionInputModels)
+                    {
+                        var newPatientPrescription = new PatientPrescription();
+                        newPatientPrescription.MedicineName = item.MedicineName;
+                        newPatientPrescription.NumberOfTimesPerDay = item.NumberOfTimesPerDay;
+                        newPatientPrescription.NumberOfPillsPerDose = item.NumberOfPillsPerDose;
+                        newPatientPrescription.Order = maxOrder + 1;
+                        newPatientPrescription.Note = model.Note;
+                        newPatientPrescription.PatientId = existingPatient.Id;
+
+                        newPatientPrescriptions.Add(newPatientPrescription);
+                    }
+
+                    if (newPatientPrescriptions.Any())
+                    {
+                        await _repository.AddRangeAsync(newPatientPrescriptions);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

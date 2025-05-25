@@ -6,17 +6,16 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrl: './prescription-form.component.scss'
 })
 export class PrescriptionFormComponent implements OnInit {
-  @Input() prescriptionForm:any = [
-    {medicineName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0}
-  ];
+  @Input() prescriptionForm: any = [];
+  @Input() addPrescriptionFormSpecification = false;
 
   isRequired = false;
   constructor() {
-    
+
   }
 
   ngOnInit(): void {
-    
+
   }
 
   isValidRow(item: any): boolean {
@@ -45,7 +44,12 @@ export class PrescriptionFormComponent implements OnInit {
   }
 
   removeRow(index: number) {
-    if (this.prescriptionForm.length > 1) {
+    if (this.addPrescriptionFormSpecification) {
+      if (this.prescriptionForm.length > 1) {
+        this.prescriptionForm.splice(index, 1);
+      }
+    }
+    else {
       this.prescriptionForm.splice(index, 1);
     }
   }

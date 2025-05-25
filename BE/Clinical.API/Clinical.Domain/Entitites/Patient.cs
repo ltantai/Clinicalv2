@@ -16,6 +16,7 @@ namespace Clinical.Domain.Entitites
         public string? LowerLevel { get; set; }
         public string? MedicalTreatmentDepartment { get; set; }
         public string? TreatmentIndication { get; set; }
+        public string? Note { get; set; }
         public int DoctorId { get; set; }
         public Doctor? Doctor { get; set; }
         public ICollection<PatientPrescription>? PatientPrescriptions { get; set; }

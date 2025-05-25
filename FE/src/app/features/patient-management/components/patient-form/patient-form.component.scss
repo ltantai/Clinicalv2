@@ -4,6 +4,10 @@
     font-weight: bold;
 }
 
+.note {
+    padding-right: 2.2rem;
+}
+
 :host ::ng-deep {
     .p-dropdown-items.ng-star-inserted {
         margin: unset !important;

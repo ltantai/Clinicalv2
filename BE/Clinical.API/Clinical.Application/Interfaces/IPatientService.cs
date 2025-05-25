@@ -21,5 +21,6 @@ namespace Clinical.Application.Interfaces
         Task DeletePatient(int patientId);
         Task<List<PatientPrescriptionViewModel>> GetPrescriptionByTimeline(string dateFrom, string dateTo);
         Task<List<PatientPrescriptionViewModel>> GetPrescriptionDetail(int order, int patientId);
+        Task AddPrescriptionForPatient(PrescriptiondetailInputModel model);
     }
 }

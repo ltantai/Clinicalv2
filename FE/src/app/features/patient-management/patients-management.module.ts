@@ -19,6 +19,7 @@ import { BreadcrumbInfoModule } from '../../Libs/share-components/breadcrumb/bre
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { PrescriptionFormComponent } from './components/prescription-form/prescription-form.component';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 @NgModule({
   declarations: [
     PatientManagementComponent,
@@ -39,7 +40,8 @@ import { PrescriptionFormComponent } from './components/prescription-form/prescr
     FormsModule,
     BreadcrumbInfoModule,
     DialogModule,
-    DropdownModule
+    DropdownModule,
+    InputTextareaModule
 ],
   providers: [],
   bootstrap: []

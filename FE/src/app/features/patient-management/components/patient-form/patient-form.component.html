@@ -5,19 +5,15 @@
             <div class="col-lg-6 col-md-12 col-xs-12">
                 <label class="fw-bold">Họ và tên <span class="required">*</span></label>
                 <div>
-                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.patientName" placeholder="Nhập họ và tên...">
+                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.patientName"
+                        placeholder="Nhập họ và tên...">
                 </div>
             </div>
             <div class="col-lg-3 col-md-12 col-xs-12">
                 <label class="fw-bold">Giới tính <span class="required">*</span></label>
                 <div>
-                    <p-dropdown 
-                        class="w-100"
-                        [options]="genders" 
-                        [(ngModel)]="formData.gender" 
-                        optionLabel="value" 
-                        placeholder="Giới tính..." 
-                    />
+                    <p-dropdown class="w-100" [options]="genders" [(ngModel)]="formData.gender" optionLabel="value"
+                        placeholder="Giới tính..." />
                     <!-- <input class="w-100" pInputText type="text" [(ngModel)]="formData.gender"> -->
                 </div>
             </div>
@@ -31,7 +27,8 @@
             <div class="col-lg-12 col-md-12 col-xs-12 mt-2">
                 <label class="fw-bold">Địa chỉ <span class="required">*</span></label>
                 <div>
-                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.address" placeholder="Nhập địa chỉ...">
+                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.address"
+                        placeholder="Nhập địa chỉ...">
                 </div>
             </div>
         </div>
@@ -42,50 +39,57 @@
             <div class="col-lg-6 col-md-12 col-xs-12">
                 <label class="fw-bold">Tuyến dưới <span class="required">*</span></label>
                 <div>
-                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.diagnostic.lowerLevel" placeholder="Nhập tuyến dưới...">
+                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.diagnostic.lowerLevel"
+                        placeholder="Nhập tuyến dưới...">
                 </div>
             </div>
             <div class="col-lg-6 col-md-12 col-xs-12">
                 <label class="fw-bold">Khoa khám bệnh <span class="required">*</span></label>
                 <div>
-                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.diagnostic.department" placeholder="Nhập khoa khám bệnh...">
+                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.diagnostic.department"
+                        placeholder="Nhập khoa khám bệnh...">
                 </div>
             </div>
         </div>
     </div>
-    <div class="row  mt-3">
+    <div class="row mt-3">
         <div class="info-lbl">Điều trị</div>
         <div class="row mt-2">
             <div class="col-lg-6 col-md-12 col-xs-12">
                 <label class="fw-bold">Chỉ định điều trị <span class="required">*</span></label>
                 <div>
-                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.treatmentIndication" placeholder="Nhập chỉ định điều trị...">
+                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.treatmentIndication"
+                        placeholder="Nhập chỉ định điều trị...">
                 </div>
             </div>
             <div class="col-lg-6 col-md-12 col-xs-12">
                 <label class="fw-bold">Bác sĩ khám bệnh <span class="required">*</span></label>
                 <div>
                     <!-- <input class="w-100" pInputText type="text" [(ngModel)]="formData.doctorName" placeholder="Nhập tên bác sĩ khám bệnh..."> -->
-                    <p-dropdown 
-                        [options]="doctors"
-                        [(ngModel)]="selectedDoctor"
-                        optionLabel="name"
-                        [filter]="true"
-                        filterBy="name" 
-                        [showClear]="true"
-                        placeholder="Nhập tên bác sĩ khám bệnh...">
-                            <!-- <ng-template pTemplate="selectedItem" let-selectedOption>
+                    <p-dropdown [appendTo]="'body'" [options]="doctors" [(ngModel)]="selectedDoctor" optionLabel="name"
+                        [filter]="true" filterBy="name" [showClear]="true" placeholder="Nhập tên bác sĩ khám bệnh...">
+                        <!-- <ng-template pTemplate="selectedItem" let-selectedOption>
                                 <div class="flex align-items-center gap-2">
                                     <div>{{ selectedOption.name }}</div>
                                 </div>
                             </ng-template> -->
-                            <ng-template let-doctor pTemplate="item">
-                                <div class="flex align-items-center gap-2">
-                                    <div>{{ doctor.name }}</div>
-                                </div>
-                            </ng-template>
+                        <ng-template let-doctor pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <div>{{ doctor.name }}</div>
+                            </div>
+                        </ng-template>
                     </p-dropdown>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="note col-lg-12 col-md-12 col-xs-12">
+            <label class="fw-bold">Ghi chú</label>
+            <div>
+                <textarea class="w-100 cursor-pointer" rows="2" cols="50" pInputTextarea
+                    [(ngModel)]="formData.note" placeholder="Ghi chú (nếu có)....">
+                </textarea>
             </div>
         </div>
     </div>
