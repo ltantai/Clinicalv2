@@ -17,7 +17,7 @@ namespace Clinical.API.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAllPatients()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
