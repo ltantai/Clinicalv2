@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
 import { Table } from 'primeng/table';
-import { PatientService } from '../../Libs/Services/patient.service';
+import { ClinicalMessageService } from '@services/message.service';
+import { PatientService } from '@services/patient.service';
 
 @Component({
   selector: 'app-patient-management',
@@ -17,9 +17,12 @@ export class PatientManagementComponent implements OnInit {
   first = 0;
   rows = 10;
   totalRecords = 1;
+
+
   constructor(
     private router: Router,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private messageService: ClinicalMessageService
   ) { }
 
   ngOnInit(): void {
@@ -66,6 +69,16 @@ export class PatientManagementComponent implements OnInit {
 
   onOpenDetail(patient: any) {
     this.router.navigate([`/patients/detail/${patient.id}`]);
+  }
+
+  onDelete(patient: any) {
+    this.patientService.deletePatient(patient.id).subscribe({
+      next: () => {
+          this.loadAllPatientData(this.searchValue, this.first + 1, this.rows);
+          this.messageService.showSuccess("Đã xóa bệnh nhân thành công");
+      },
+      error: () => {this.messageService.showError("Xóa bệnh nhân thất bại");}
+    })
   }
 
   onHide(event: any) {

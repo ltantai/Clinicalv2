@@ -112,7 +112,7 @@ namespace Clinical.Infrastructure.GenericDataService
             }
 
             // Apply filters
-            query = query.Where(condition).Where(x => !x.IsDelete);
+            query = query.Where(condition).Where(x => !x.IsDelete).OrderByDescending(x => x.Id);
 
             // Total count before pagination
             var totalCount = await query.CountAsync();

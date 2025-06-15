@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { DoctorService } from '../../Libs/Services/doctor.service';
+import { ClinicalMessageService } from '../../Libs/Services/message.service';
 
 @Component({
   selector: 'app-doctor-management',
@@ -18,7 +19,8 @@ export class DoctorManagementComponent {
   totalRecords = 1;
   constructor(
     private router: Router,
-    private doctorService: DoctorService
+    private doctorService: DoctorService,
+    private messageService: ClinicalMessageService
   ) { }
 
   ngOnInit(): void {}
@@ -38,10 +40,9 @@ export class DoctorManagementComponent {
           const data = results.items.map((item: any, index: number) => ({
             id: item.id,
             order: index + 1,
-            patientName: item.patientName,
-            gender: item.gender,
-            address: item.address,
-            doctorName: item.doctor ? item.doctor.name : ""
+            name: item.name ?? "",
+            phoneNumber: item.phoneNumber,
+            email: item.email,
           }));
           this.doctors = data;
           this.totalRecords = results.totalCount;
@@ -61,8 +62,18 @@ export class DoctorManagementComponent {
     this.rows = event.rows;
   }
 
-  onOpenDetail(patient: any) {
-    this.router.navigate([`/patients/detail/${patient.id}`]);
+  onOpenDetail(doctor: any) {
+    this.router.navigate([`/doctors/detail/${doctor.id}`]);
+  }
+
+  onDelete(doctor: any) {
+    this.doctorService.delete(doctor.id).subscribe({
+      next: () => {
+          this.loadAllDoctorData(this.searchValue, this.first + 1, this.rows);
+          this.messageService.showSuccess("Xóa bác sĩ thành công");
+      },
+      error: () => { this.messageService.showSuccess("Xóa bác sĩ thất bại");}
+    })
   }
 
   onHide(event: any) {

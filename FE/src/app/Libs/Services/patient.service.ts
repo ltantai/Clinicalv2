@@ -29,12 +29,12 @@ export class PatientService {
     return this.http.post(`${this.baseUrl}/add`, patientData);
   }
 
-  updatePatient(id: number, patientData: any){
-    return this.http.put(`${this.baseUrl}/${id}`, patientData);
+  updatePatient(patientData: any){
+    return this.http.put(`${this.baseUrl}/update`, patientData);
   }
 
   deletePatient(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+    return this.http.delete(`${this.baseUrl}/delete/${id}`);
   }
 
   addPrescriptionForPatient(formData: any) {

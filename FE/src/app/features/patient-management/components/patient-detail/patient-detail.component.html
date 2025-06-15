@@ -147,8 +147,11 @@
     <p-dialog header="Đơn thuốc chi tiết" [modal]="true" [(visible)]="prescriptionVisible" [style]="{ width: '50vw' }">
         <div *ngIf="preScriptionDetail.length > 0">
             <div class="p-text-secondary block mb-1">Thông tin đơn thuốc: {{preScriptionDetail[0].order}}</div>
-            <div class="p-text-secondary block mb-5">Ngày tạo đơn thuốc:
-                {{formatTime(preScriptionDetail[0].createTime)}}</div>
+            <div class="p-text-secondary block mb-5">Ngày tạo đơn thuốc: {{formatTime(preScriptionDetail[0].createTime)}}</div>
+            <div>
+                <label class="font-semibold">Ghi chú:</label>
+                <div class="ms-2">{{preScriptionDetail[0].note}}</div>
+            </div>
             <div class="mt-3" *ngFor="let item of preScriptionDetail; index as i">
                 <div class="flex align-items-center gap-3 mb-3">
                     <label class="font-semibold">{{i + 1}}. Tên thuốc</label>
@@ -196,3 +199,4 @@
         </div>
     </p-dialog>
 </div>
+<p-toast position="bottom-right" key="br"/>

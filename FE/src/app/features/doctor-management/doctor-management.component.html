@@ -32,23 +32,22 @@
                 <tr>
                     <th>STT</th>
                     <th>Họ và tên</th>
-                    <th>Giới tính</th>
-                    <th>Địa chỉ</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
                     <th></th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-patient>
-                <tr [pSelectableRow]="patient">
-                    <td>{{ patient.order }}</td>
-                    <td>{{ patient.patientName }}</td>
-                    <td>{{ patient.gender }}</td>
-                    <td>{{ patient.address }}</td>
+            <ng-template pTemplate="body" let-doctor>
+                <tr [pSelectableRow]="doctor">
+                    <td>{{ doctor.order }}</td>
+                    <td>{{ doctor.name }}</td>
+                    <td>{{ doctor.phoneNumber }}</td>
+                    <td>{{ doctor.email }}</td>
                     <td class="d-flex">
-                        <div class="cursor-pointer" pTooltip="Xem chi tiết" tooltipPosition="top" placeholder="Top"
-                            (click)="onOpenDetail(patient)">
+                        <div class="cursor-pointer" pTooltip="Xem chi tiết" tooltipPosition="top" placeholder="Top" (click)="onOpenDetail(doctor)">
                             <span class="pi pi-eye"></span>
                         </div>
-                        <div class="ms-5 cursor-pointer" pTooltip="Xóa" tooltipPosition="top" placeholder="Top">
+                        <div class="ms-5 cursor-pointer" pTooltip="Xóa" tooltipPosition="top" placeholder="Top" (click)="onDelete(doctor)">
                             <span class="pi pi-trash"></span>
                         </div>
                     </td>
@@ -57,3 +56,4 @@
         </p-table>
     </div>
 </div>
+<p-toast position="bottom-right" key="br"/>

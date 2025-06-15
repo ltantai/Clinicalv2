@@ -50,7 +50,7 @@
                             (click)="onOpenDetail(patient)">
                             <span class="pi pi-eye"></span>
                         </div>
-                        <div class="ms-5 cursor-pointer" pTooltip="Xóa" tooltipPosition="top" placeholder="Top">
+                        <div class="ms-5 cursor-pointer" pTooltip="Xóa" tooltipPosition="top" placeholder="Top" (click)="onDelete(patient)">
                             <span class="pi pi-trash"></span>
                         </div>
                     </td>
@@ -66,3 +66,4 @@
         <app-patient-form [isEdit]="false" (onCloseDialog)="onHide($event)"></app-patient-form>
     </p-dialog>
 </div>
+<p-toast position="bottom-right" key="br"/>
