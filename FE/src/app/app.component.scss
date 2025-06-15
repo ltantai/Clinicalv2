@@ -11,20 +11,25 @@ body {
   .sidebar {
     width: 300px;
     min-width: 300px;
-    background-color: #ffffff;
+    //background-color: #ffffff;
     color: black;
-    min-height: 100vh;
-    // box-shadow: 0px 0px 7px #d7f8fd;
-
+    height: 100vh; // full height for sidebar
+    position: fixed; // keep it fixed while scrolling
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 10;
+    background: linear-gradient(0deg, var(--primary-background-color), transparent);
+    box-shadow: 0px 1px 10px #00485e;
     .tilte-header {
       margin-left: 1rem;
-      color: grey;
+      color: #0c546a;
       font-size: .9rem;
     }
   }
 
   .sidebar a {
-    color: black;
+    color: #ffffff;
     text-decoration: none;
     display: block;
     padding: 15px 20px;
@@ -33,7 +38,7 @@ body {
 
   .sidebar a.active {
     background-color: #d0e4ff;
-    color: #1890ff;
+    color: var(--primary-color);
     border-right: 2px solid;
   }
 
@@ -50,15 +55,23 @@ body {
   .sidebar h3 {
     padding: 20px;
     margin-bottom: 0;
-    background-color: white;
+    //background-color: white;
+    background: linear-gradient(0deg, #e7eef0, transparent);
   }
 
   // Content 
 
+  .align-menu-container{
+    margin-left: 300px;
+  }
   .content-container {
     background-color: #f7f7f7;
     width: 100%;
-
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(0deg, var(--primary-background-color), transparent);
     .menu-group {
       overflow: hidden;
       transition: max-height 0.5s ease;
@@ -68,9 +81,12 @@ body {
       font-weight: bold;
       margin-bottom: 8px;
     }
+
     .header-bar {
-      height: 4.5rem;
-      box-shadow:  5px 0px 6px #2e798f;
+      //height: 4.5rem;
+      flex-shrink: 0;
+      box-shadow: 5px 0px 6px #2e798f;
+
       .collapse-btn {
         box-shadow: 2px 1px 4px #adadad;
         border-radius: 50%;
@@ -81,8 +97,9 @@ body {
         position: fixed;
         margin: 1rem 0 0 -1.2rem;
         background: white;
+        z-index: 10;
       }
-      
+
       .expand-btn {
         box-shadow: 2px 1px 4px #adadad;
         border-radius: 50%;
@@ -95,9 +112,25 @@ body {
         background: white;
       }
     }
+
     .content {
+      flex-grow: 1;
+      overflow-y: auto; // scrollable main area
       padding: 1rem 2rem;
     }
   }
+}
 
+//loading panel 
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -18,11 +18,15 @@ import { PatientFormComponent } from './components/patient-form/patient-form.com
 import { BreadcrumbInfoModule } from '../../Libs/share-components/breadcrumb/breadcrumb.module';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { PrescriptionFormComponent } from './components/prescription-form/prescription-form.component';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ToastModule } from 'primeng/toast';
 @NgModule({
   declarations: [
     PatientManagementComponent,
     PatientDetailComponent,
-    PatientFormComponent
+    PatientFormComponent,
+    PrescriptionFormComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +41,9 @@ import { DropdownModule } from 'primeng/dropdown';
     FormsModule,
     BreadcrumbInfoModule,
     DialogModule,
-    DropdownModule
+    DropdownModule,
+    InputTextareaModule,
+    ToastModule
 ],
   providers: [],
   bootstrap: []

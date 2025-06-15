@@ -1,30 +1,60 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { ClinicalMessageService } from '@services/message.service';
+import { PatientService } from '@services/patient.service';
 
 @Component({
   selector: 'app-patient-management',
   templateUrl: './patient-management.component.html',
   styleUrl: './patient-management.component.scss'
 })
-export class PatientManagementComponent implements OnInit{
-  @ViewChild('dt') dt!: Table; 
+export class PatientManagementComponent implements OnInit {
+  @ViewChild('dt') dt!: Table;
   searchValue = "";
-  products = [
-    {id: 1, order: 1,patientName: "Nguyễn Văn A",gender: "Nam",address: "Ấp 2, Tân lộc, Tam Bình, Vĩnh Long", doctorName: "Nguyễn Đạt Nhân"},
-    {id: 2, order: 2,patientName: "Nguyễn Thị B",gender: "Nữ",address: "Ấp 9, Tân lộc, Tam Bình, Vĩnh Long", doctorName: "Nguyễn Đạt Nhân"},
-    {id: 3, order: 3,patientName: "Huỳnh Thanh Long",gender: "Nam",address: "Ấp 9, Tân lộc, Tam Bình, Vĩnh Long", doctorName: "Nguyễn Đạt Nhân"},
-  ];
-
+  patients: any = [];
   visible = false;
+  first = 0;
+  rows = 10;
+  totalRecords = 1;
+
 
   constructor(
-    private router: Router
-  ) {}
+    private router: Router,
+    private patientService: PatientService,
+    private messageService: ClinicalMessageService
+  ) { }
 
   ngOnInit(): void {
-    
+    //this.loadAllPatientData(this.searchValue, this.first + 1, this.rows);
+  }
+
+  loadPatientsLazy(event: any) {
+    const page = event.first / event.rows;
+    const size = event.rows;
+    const search = this.searchValue;
+
+    this.loadAllPatientData(search, page + 1, size);
+  }
+  
+  loadAllPatientData(search: string, pageNumber: number, pageSize: number) {
+    this.patientService.getAllPaginatedPatients(search, pageNumber, pageSize).subscribe({
+      next: (results: any) => {
+        if (results.items) {
+          const data = results.items.map((item: any, index: number) => ({
+            id: item.id,
+            order: index + 1,
+            patientName: item.patientName,
+            gender: item.gender,
+            address: item.address,
+            doctorName: item.doctor ? item.doctor.name : ""
+          }));
+          this.patients = data;
+          this.totalRecords = results.totalCount;
+        }
+      },
+      error: (error: any) => { console.log(error); }
+    });
   }
 
   onGlobalFilter(event: Event) {
@@ -32,12 +62,28 @@ export class PatientManagementComponent implements OnInit{
     this.dt.filterGlobal(value, 'contains');
   }
 
+  pageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
+  }
+
   onOpenDetail(patient: any) {
     this.router.navigate([`/patients/detail/${patient.id}`]);
   }
 
+  onDelete(patient: any) {
+    this.patientService.deletePatient(patient.id).subscribe({
+      next: () => {
+          this.loadAllPatientData(this.searchValue, this.first + 1, this.rows);
+          this.messageService.showSuccess("Đã xóa bệnh nhân thành công");
+      },
+      error: () => {this.messageService.showError("Xóa bệnh nhân thất bại");}
+    })
+  }
+
   onHide(event: any) {
     this.visible = event;
+    this.loadAllPatientData(this.searchValue, this.first + 1, this.rows);
   }
 
   addNewPatient() {

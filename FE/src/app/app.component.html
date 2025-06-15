@@ -17,7 +17,7 @@
             </a>
         </div>
         <!-- Content -->
-        <div class="content-container">
+        <div class="content-container" [ngClass]="{'align-menu-container':isManagementMenuOpen}">
             <div class="header-bar">
                 <div *ngIf="isManagementMenuOpen" (click)="toggleManagementMenu()" class="collapse-btn">
                     <i class="pi pi-angle-left"></i>
@@ -28,6 +28,13 @@
                 </div>
             </div>
             <div class="content">
+                <div *ngIf="loadingService.loading$ | async" class="loading-overlay">
+                    <p-progressSpinner 
+                    styleClass="w-4rem h-4rem" 
+                    strokeWidth="8" 
+                    fill="var(--surface-ground)" 
+                    animationDuration=".5s" />
+                </div>
                 <router-outlet></router-outlet>
             </div>
         </div>
