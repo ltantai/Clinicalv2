@@ -10,7 +10,7 @@ const routes: Routes = [
   {
     path: 'doctors',
     loadChildren: () =>
-      import('./features/patient-management/patients-management.module').then(m => m.PatientManagementModule)
+      import('./features/doctor-management/doctor-management.module').then(m => m.DoctorManagementModule)
   },
   { path: '', redirectTo: '/patients', pathMatch: 'full' }
 ];

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { PatientService } from '../../../../Libs/Services/patient.service';
 import { formatDate } from '@angular/common';
+import { PatientService } from '@services/patient.service';
+import { ClinicalMessageService } from '@services/message.service';
 
 @Component({
   selector: 'app-patient-detail',
@@ -15,7 +16,7 @@ export class PatientDetailComponent implements OnInit {
   prescriptionFormVisible = false;
   prescriptionForm: any = {
     note: "",
-    form:[{medicinName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0}]
+    form: [{ medicinName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0 }]
   };
   items: MenuItem[] = [
     {
@@ -32,12 +33,13 @@ export class PatientDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private messageService: ClinicalMessageService
   ) {
   }
 
   ngOnInit(): void {
-    this.loadPatientDetail(); 
+    this.loadPatientDetail();
   }
 
   loadPatientDetail() {
@@ -47,8 +49,12 @@ export class PatientDetailComponent implements OnInit {
       this.patientService.getPatientById(id).subscribe({
         next: (data: any) => {
           this.dataSource = data;
-        }, 
-        error: (error: any) => {}
+
+          if (this.dataSource.patientPrescriptions && this.dataSource.patientPrescriptions.length > 0) {
+            this.dataSource.patientPrescriptions = this.dataSource.patientPrescriptions.sort((a: any, b: any) => b.order - a.order);
+          }
+        },
+        error: (error: any) => { }
       })
     }
   }
@@ -56,15 +62,15 @@ export class PatientDetailComponent implements OnInit {
   loadPrescriptionDetail(order: number, patientId: number) {
     this.patientService.getPrescriptionDetail(order, patientId).subscribe({
       next: (data: any) => {
-        this.preScriptionDetail = data;        
+        this.preScriptionDetail = data;
       },
-      error: () => {}
+      error: () => { }
     });
   }
 
   formatTime(value: any) {
     if (value) {
-      return formatDate(value, "dd-MM-yyyy hh:mm:ss",'en-us');
+      return formatDate(value, "dd-MM-yyyy hh:mm:ss", 'en-us');
     }
     return value;
   }
@@ -72,17 +78,18 @@ export class PatientDetailComponent implements OnInit {
   onOpenDetail(preScription: any) {
     if (preScription) {
       this.prescriptionVisible = true;
-      this.loadPrescriptionDetail(preScription.order, preScription.patientId);      
+      this.loadPrescriptionDetail(preScription.order, preScription.patientId);
     }
   }
 
-  onHide() {}
+  onHide() { }
 
   onEdit() {
     this.formData = {
+      id: this.patientId,
       patientName: this.dataSource.patientName,
-      gender: {value: this.dataSource.gender},
-      age: this.dataSource.age,
+      gender: { value: this.dataSource.gender },
+      age: Number(this.dataSource.age) ?? 0,
       address: this.dataSource.address,
       diagnostic: {
         lowerLevel: this.dataSource.lowerLevel,
@@ -102,7 +109,7 @@ export class PatientDetailComponent implements OnInit {
   resetValue() {
     this.prescriptionForm = {
       note: "",
-      form:[{medicinName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0}]
+      form: [{ medicinName: "", numberOfTimesPerDay: 0, numberOfPillsPerDose: 0 }]
     };
     this.prescriptionFormVisible = false;
   }
@@ -117,14 +124,15 @@ export class PatientDetailComponent implements OnInit {
       patientId: this.patientId,
       note: this.prescriptionForm.note,
       patientPrescriptionInputModels: this.prescriptionForm.form
-    }    
+    }
 
     this.patientService.addPrescriptionForPatient(form).subscribe({
       next: () => {
         this.resetValue();
-        this.loadPatientDetail(); 
+        this.loadPatientDetail();
+        this.messageService.showSuccess("Thêm đơn thuốc thành công");
       },
-      error: (error: any) => { console.log(error); }
+      error: (error: any) => { this.messageService.showError("Thêm đơn thuốc thất bại"); }
     });
   }
 }

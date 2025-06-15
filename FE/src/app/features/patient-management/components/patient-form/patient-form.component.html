@@ -104,7 +104,8 @@
     <div class="mt-3 row text-end">
         <div class="d-flex justify-content-end">
             <p-button label="Hủy" [text]="true" severity="secondary" (onClick)="onCancel()" />
-            <p-button class="ms-3" label="Lưu" [outlined]="true" severity="success" (onClick)="onSave()" />
+            <p-button *ngIf="!isEdit" class="ms-3" label="Lưu" [outlined]="true" severity="success" (onClick)="onSave()" />
+            <p-button *ngIf="isEdit" class="ms-3" label="Lưu" [outlined]="true" severity="success" (onClick)="onEdit()" />
         </div>
     </div>
 </div>

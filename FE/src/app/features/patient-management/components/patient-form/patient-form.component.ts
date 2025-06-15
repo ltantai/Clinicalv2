@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { PatientService } from '../../../../Libs/Services/patient.service';
+import { DoctorService } from '@services/doctor.service';
+import { ClinicalMessageService } from '@services/message.service';
+import { PatientService } from '@services/patient.service';
 
 @Component({
   selector: 'app-patient-form',
@@ -31,22 +33,33 @@ export class PatientFormComponent implements OnInit {
     { value: 'Khác' },
   ];
 
-  doctors: any[] = [
-    { id: 1, name: "L1" },
-    { id: 2, name: "Lê Đạt Nhân" }
-  ];
+  doctors: any[] = [];
+  doctorsLookupData: any[] = [];
 
   selectedDoctor: any;
 
   constructor(
     private router: Router,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private doctorService: DoctorService,
+    private messageService: ClinicalMessageService
   ) {
 
   }
 
   ngOnInit(): void {
-    this.setDoctorFieldValue();
+    this.lookupDoctors();
+  }
+
+  lookupDoctors() {
+    this.doctorService.getAllDoctors().subscribe({
+      next: (data: any) => {
+        this.doctors = [...data];
+        this.doctorsLookupData = [...data];
+        this.setDoctorFieldValue();
+      },
+      error: () => {}
+    })
   }
 
   setDoctorFieldValue () {
@@ -77,10 +90,7 @@ export class PatientFormComponent implements OnInit {
       { value: 'Khác' },
     ];
 
-    this.doctors = [
-      { id: 1, name: "L1" },
-      { id: 2, name: "Lê Đạt Nhân" }
-    ];
+    this.doctors = [...this.doctorsLookupData];
 
     this.selectedDoctor = null;
     this.onCloseDialog.emit(false);
@@ -109,8 +119,36 @@ export class PatientFormComponent implements OnInit {
     this.patientService.createPatient(form).subscribe({
       next: () => {
         this.resetValue();
+        this.messageService.showSuccess("Thêm mới bệnh nhân thành công");
       },
-      error: (error: any) => { console.log(error); }
+      error: (error: any) => {      
+        this.messageService.showError("Thêm mới bệnh nhân thất bại");
+      }
+    });
+  }
+
+  onEdit() {
+    const form = {
+      id: this.formData.id,
+      patientName: this.formData.patientName,
+      gender: this.formData.gender.value,
+      age: this.formData.age,
+      address: this.formData.address,
+      lowerLevel: this.formData.diagnostic.lowerLevel,
+      medicalTreatmentDepartment: this.formData.diagnostic.department,
+      treatmentIndication: this.formData.treatmentIndication,
+      doctorId: this.selectedDoctor.id,
+      note: this.formData.note,
+      patientPrescriptionInputModels: this.formData.prescriptionForm
+    }
+    this.patientService.updatePatient(form).subscribe({
+      next: () => {
+        this.resetValue();
+        this.messageService.showSuccess("Cập nhật bệnh nhân thành công");
+      },
+      error: (error: any) => {      
+        this.messageService.showError("Cập nhật bệnh nhân thất bại");
+      }
     });
   }
 }
