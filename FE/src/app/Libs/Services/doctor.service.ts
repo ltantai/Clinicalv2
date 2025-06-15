@@ -25,11 +25,11 @@ export class DoctorService {
     return this.http.post(`${this.baseUrl}/add`, formData);
   }
 
-  update(id: number, formData: any){
-    return this.http.put(`${this.baseUrl}/${id}`, formData);
+  update(formData: any){
+    return this.http.put(`${this.baseUrl}/update`, formData);
   }
 
   delete(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+    return this.http.delete(`${this.baseUrl}/delete/${id}`);
   }
 }

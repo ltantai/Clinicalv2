@@ -115,7 +115,7 @@ export class PatientDetailComponent implements OnInit {
   }
 
   onCancel() {
-
+    this.resetValue();
   }
 
   onSave() {
