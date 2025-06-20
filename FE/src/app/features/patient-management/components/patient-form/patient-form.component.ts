@@ -94,7 +94,9 @@ export class PatientFormComponent implements OnInit {
 
     this.selectedDoctor = null;
     this.onCloseDialog.emit(false);
-    this.router.navigate(["/patients"]);
+    if (!this.isEdit) {
+      this.router.navigate(["/patients"]);
+    }
   }
 
   onCancel() {

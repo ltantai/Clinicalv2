@@ -13,8 +13,18 @@ import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 import { BreadcrumbInfoModule } from '../../Libs/share-components/breadcrumb/breadcrumb.module';
 import { DoctorManagementRoutingModule } from './doctor-management-routing.module';
+import { DoctorFormComponent } from './components/doctor-form/doctor-form.component';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { DoctorManagementComponent } from './doctor-management.component';
+import { ToastModule } from 'primeng/toast';
+import { DoctorDetailComponent } from './components/doctor-detail/doctor-detail.component';
+
 @NgModule({
-  declarations: [],
+  declarations: [
+    DoctorManagementComponent,
+    DoctorFormComponent,
+    DoctorDetailComponent
+  ],
   imports: [
     CommonModule,
     DoctorManagementRoutingModule,
@@ -29,8 +39,11 @@ import { DoctorManagementRoutingModule } from './doctor-management-routing.modul
     BreadcrumbInfoModule,
     DialogModule,
     DropdownModule,
-    InputTextareaModule
-],
+    InputTextareaModule,
+    FloatLabelModule,
+    ToastModule,
+    BreadcrumbInfoModule
+  ],
   providers: [],
   bootstrap: []
 })

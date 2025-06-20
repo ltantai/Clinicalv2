@@ -1,0 +1,44 @@
+<div class="form-container">
+    <div class="row">
+        <div class="info-lbl">Thông tin cá nhân</div>
+        <div class="row mt-2">
+            <div class="col-lg-12 col-md-12 col-xs-12">
+                <label class="fw-bold">Họ và tên <span class="required">*</span></label>
+                <div>
+                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.name"
+                        placeholder="Nhập họ và tên...">
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-xs-12 mt-2">
+                <label class="fw-bold">Số điện thoại <span class="required">*</span></label>
+                <div>
+                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.phoneNumber"
+                        placeholder="Nhập số điện thoại...">
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-xs-12 mt-2">
+                <label class="fw-bold">Email <span class="required">*</span></label>
+                <div>
+                    <input class="w-100" pInputText type="text" [(ngModel)]="formData.email"
+                        placeholder="Nhập email..">
+                </div>
+            </div>
+            <div class="note col-lg-12 col-md-12 col-xs-12">
+                <label class="fw-bold">Mô tả</label>
+                <div>
+                    <textarea class="w-100 cursor-pointer" rows="2" cols="50" pInputTextarea
+                        [(ngModel)]="formData.description" placeholder="Mô tả (nếu có)....">
+                    </textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-3 row text-end">
+        <div class="d-flex justify-content-end">
+            <p-button label="Hủy" [text]="true" severity="secondary" (onClick)="onCancel()" />
+            <p-button *ngIf="!isEdit" class="ms-3" label="Lưu" [outlined]="true" severity="success" (onClick)="onSave()" />
+            <p-button *ngIf="isEdit" class="ms-3" label="Lưu" [outlined]="true" severity="success" (onClick)="onEdit()" />
+        </div>
+    </div>
+</div>

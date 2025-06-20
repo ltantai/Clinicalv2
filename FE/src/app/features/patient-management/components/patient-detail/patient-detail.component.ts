@@ -82,7 +82,9 @@ export class PatientDetailComponent implements OnInit {
     }
   }
 
-  onHide() { }
+  onHide(event: any) { 
+    this.visible = event;
+  }
 
   onEdit() {
     this.formData = {
@@ -91,6 +93,7 @@ export class PatientDetailComponent implements OnInit {
       gender: { value: this.dataSource.gender },
       age: Number(this.dataSource.age) ?? 0,
       address: this.dataSource.address,
+      note: this.dataSource.note,
       diagnostic: {
         lowerLevel: this.dataSource.lowerLevel,
         department: this.dataSource.medicalTreatmentDepartment
@@ -115,7 +118,7 @@ export class PatientDetailComponent implements OnInit {
   }
 
   onCancel() {
-
+    this.resetValue();
   }
 
   onSave() {
