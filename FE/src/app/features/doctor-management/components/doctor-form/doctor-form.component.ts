@@ -43,7 +43,10 @@ export class DoctorFormComponent {
       phoneNumber: "",
       email: ""
     };
-    this.router.navigate(["/doctors"]);
+    if (!this.isEdit) {
+      this.router.navigate(["/doctors"]);
+    }
+    this.onCloseDialog.emit(false);
   }
 
   onCancel() {
@@ -51,17 +54,7 @@ export class DoctorFormComponent {
   }
 
   onSave() {
-    const form = {
-      id: 0,
-      name: this.formData.name,
-      phoneNumber: this.formData.phoneNumber,
-      email: this.formData.email,
-    }
-
-    console.log(form);
-    
-
-    this.doctorService.create(form).subscribe({
+    this.doctorService.create(this.formData).subscribe({ 
       next: () => {
         this.resetValue();
         this.messageService.showSuccess("Thêm mới bác sĩ thành công");
@@ -73,13 +66,7 @@ export class DoctorFormComponent {
   }
 
   onEdit() {
-    const form = {
-      id: this.formData.id,
-      name: this.formData.name,
-      phoneNumber: this.formData.phoneNumber,
-      email: this.formData.email,
-    }
-    this.doctorService.update(form).subscribe({
+    this.doctorService.update(this.formData).subscribe({
       next: () => {
         this.resetValue();
         this.messageService.showSuccess("Cập nhật bác sĩ thành công");

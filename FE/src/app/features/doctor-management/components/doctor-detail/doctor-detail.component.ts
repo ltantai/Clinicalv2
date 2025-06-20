@@ -15,7 +15,7 @@ export class DoctorDetailComponent implements OnInit {
   items: MenuItem[] = [
     {
       label: 'Quản lý bác sĩ',
-      route: '/Doctors'
+      route: '/doctors'
     },
     { label: 'Thông tin bác sĩ' }
   ];
@@ -56,14 +56,17 @@ export class DoctorDetailComponent implements OnInit {
     return value;
   }
 
-  onHide() { }
+  onHide(event: any) { 
+    this.visible = event;
+  }
 
   onEdit() {
     this.formData = {
       id: this.doctorId,
       name: this.dataSource.name,
       phoneNumber: this.dataSource.phoneNumber,
-      email: this.dataSource.email
+      email: this.dataSource.email,
+      description: this.dataSource.description
     }
     this.visible = true;
   }

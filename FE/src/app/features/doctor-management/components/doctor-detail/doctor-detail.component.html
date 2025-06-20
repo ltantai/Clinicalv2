@@ -25,6 +25,12 @@
                             {{dataSource.email}}
                         </div>
                     </div>
+                    <div class="mt-3 col-lg-12 col-md-12 col-xs-12">
+                        <label class="fw-bold">Mô tả:</label>
+                        <div>
+                            {{dataSource.description}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,17 +42,13 @@
         <div>
             <p-button class="add-btn" label="Chỉnh sửa" (onClick)="onEdit()"></p-button>
         </div>
-        <!-- <div class="ms-3">
-            <p-button severity="secondary" label="Xóa"></p-button>
-        </div> -->
     </div>
 </div>
 
 <div *ngIf="visible">
-    <p-dialog [appendTo]="'body'" header="Chỉnh sửa" [modal]="true" [(visible)]="visible" [style]="{ width: '50vw'}"
-        (onHide)="onHide()">
+    <p-dialog [appendTo]="'body'" header="Chỉnh sửa" [modal]="true" [(visible)]="visible" [style]="{ width: '50vw'}">
         <span class="p-text-secondary block mb-3">Cập nhật thông tin bác sĩ.</span>
-        <app-doctor-form [formData]="formData" [isEdit]="true"></app-doctor-form>
+        <app-doctor-form [formData]="formData" [isEdit]="true" (onCloseDialog)="onHide($event)"></app-doctor-form>
     </p-dialog>
 </div>
 <p-toast position="bottom-right" key="br"/>

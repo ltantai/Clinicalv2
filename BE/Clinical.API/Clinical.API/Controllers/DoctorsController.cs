@@ -31,6 +31,21 @@ namespace Clinical.API.Controllers
 
         }
 
+        [HttpGet("GetDoctorById/{id}")]
+        public async Task<IActionResult> GetDoctorById([FromRoute] int id)
+        {
+            try
+            {
+                var results = await _doctorService.GetDoctorById(id);
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error while getting doctor detail");
+            }
+
+        }
+
         [HttpGet("GetPaginatedDoctors")]
         public async Task<IActionResult> GetPaginatedDoctors([FromQuery] string? search, [FromQuery] int pageNumber = 1,[FromQuery] int pageSize = 10)
         {
