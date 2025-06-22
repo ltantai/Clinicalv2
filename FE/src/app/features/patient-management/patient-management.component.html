@@ -61,9 +61,9 @@
 </div>
 
 <div>
-    <p-dialog header="Thêm bệnh nhân" [modal]="true" [(visible)]="visible" [style]="{ width: '50vw' }">
+    <p-dialog header="Thêm bệnh nhân" [modal]="true" [(visible)]="visible" [style]="{ width: '50vw' }" (onHide)="onHide()">
         <span class="p-text-secondary block mb-3">Điền đầy đủ thông tin bệnh nhân <span class="fw-bold"><i>(Bắt buộc)</i></span></span>
-        <app-patient-form [isEdit]="false" (onCloseDialog)="onHide($event)"></app-patient-form>
+        <app-patient-form #patientForm [isEdit]="false" (onCloseDialog)="onCloseDialog($event)"></app-patient-form>
     </p-dialog>
 </div>
 <p-toast position="bottom-right" key="br"/>
