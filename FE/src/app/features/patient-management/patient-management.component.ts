@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, viewChild, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { ClinicalMessageService } from '@services/message.service';
 import { PatientService } from '@services/patient.service';
+import { PatientFormComponent } from './components/patient-form/patient-form.component';
 
 @Component({
   selector: 'app-patient-management',
@@ -11,6 +12,7 @@ import { PatientService } from '@services/patient.service';
 })
 export class PatientManagementComponent implements OnInit {
   @ViewChild('dt') dt!: Table;
+  @ViewChild('patientForm') patientForm!: PatientFormComponent
   searchValue = "";
   patients: any = [];
   visible = false;
@@ -25,9 +27,7 @@ export class PatientManagementComponent implements OnInit {
     private messageService: ClinicalMessageService
   ) { }
 
-  ngOnInit(): void {
-    //this.loadAllPatientData(this.searchValue, this.first + 1, this.rows);
-  }
+  ngOnInit(): void {}
 
   loadPatientsLazy(event: any) {
     const page = event.first / event.rows;
@@ -43,7 +43,7 @@ export class PatientManagementComponent implements OnInit {
         if (results.items) {
           const data = results.items.map((item: any, index: number) => ({
             id: item.id,
-            order: index + 1,
+            order: pageNumber > 1 ? ((pageNumber*10) + (index + 1)) : (index + 1),
             patientName: item.patientName,
             gender: item.gender,
             address: item.address,
@@ -81,7 +81,13 @@ export class PatientManagementComponent implements OnInit {
     })
   }
 
-  onHide(event: any) {
+  onHide() {
+    if (!this.patientForm) return;
+    this.visible = false;
+    this.patientForm.resetValue();
+  }
+
+  onCloseDialog(event: any) {
     this.visible = event;
     this.loadAllPatientData(this.searchValue, this.first + 1, this.rows);
   }

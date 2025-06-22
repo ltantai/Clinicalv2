@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpWrapperService } from './http-wrapper.service';
+import { environment } from 'environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DoctorService {
-  private baseUrl = 'https://localhost:7129/api/doctors';
+  private baseUrl = `${environment.baseUrl}/doctors`;
 
   constructor(private http: HttpWrapperService) {}
 

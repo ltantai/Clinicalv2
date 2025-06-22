@@ -8,6 +8,7 @@
                     <input class="w-100" pInputText type="text" [(ngModel)]="formData.name"
                         placeholder="Nhập họ và tên...">
                 </div>
+                <small *ngIf="isFormRequried && !formData.name" class="required"> Trường này bắt buộc</small>
             </div>
             <div class="col-lg-12 col-md-12 col-xs-12 mt-2">
                 <label class="fw-bold">Số điện thoại <span class="required">*</span></label>
@@ -15,6 +16,7 @@
                     <input class="w-100" pInputText type="text" [(ngModel)]="formData.phoneNumber"
                         placeholder="Nhập số điện thoại...">
                 </div>
+                <small *ngIf="isFormRequried && !formData.phoneNumber" class="required"> Trường này bắt buộc</small>
             </div>
             <div class="col-lg-12 col-md-12 col-xs-12 mt-2">
                 <label class="fw-bold">Email <span class="required">*</span></label>
@@ -22,6 +24,7 @@
                     <input class="w-100" pInputText type="text" [(ngModel)]="formData.email"
                         placeholder="Nhập email..">
                 </div>
+                <small *ngIf="isFormRequried && !formData.email" class="required"> Trường này bắt buộc</small>
             </div>
             <div class="note col-lg-12 col-md-12 col-xs-12">
                 <label class="fw-bold">Mô tả</label>
@@ -30,6 +33,7 @@
                         [(ngModel)]="formData.description" placeholder="Mô tả (nếu có)....">
                     </textarea>
                 </div>
+                <small *ngIf="isFormRequried && !formData.description" class="required"> Trường này bắt buộc</small>
             </div>
         </div>
     </div>

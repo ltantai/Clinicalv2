@@ -58,6 +58,7 @@ export class DoctorDetailComponent implements OnInit {
 
   onHide(event: any) { 
     this.visible = event;
+    this.loadDoctorDetail();
   }
 
   onEdit() {

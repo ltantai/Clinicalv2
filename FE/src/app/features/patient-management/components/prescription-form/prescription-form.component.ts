@@ -30,6 +30,16 @@ export class PrescriptionFormComponent implements OnInit {
     return this.prescriptionForm.every((row: any) => this.isValidRow(row));
   }
 
+  validation() {
+    const allRowValid = this.allRowsValid();
+    if (allRowValid) {
+      this.isRequired = false;
+    } else {
+      this.isRequired = true;
+    }
+    return allRowValid;
+  }
+
   addRow() {
     if (this.allRowsValid()) {
       this.prescriptionForm.push({

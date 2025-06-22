@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { formatDate } from '@angular/common';
 import { PatientService } from '@services/patient.service';
 import { ClinicalMessageService } from '@services/message.service';
+import { PrescriptionFormComponent } from '../prescription-form/prescription-form.component';
 
 @Component({
   selector: 'app-patient-detail',
@@ -11,6 +12,7 @@ import { ClinicalMessageService } from '@services/message.service';
   styleUrl: './patient-detail.component.scss'
 })
 export class PatientDetailComponent implements OnInit {
+  @ViewChild("preForm") preForm !: PrescriptionFormComponent
   visible = false;
   prescriptionVisible = false;
   prescriptionFormVisible = false;
@@ -84,6 +86,7 @@ export class PatientDetailComponent implements OnInit {
 
   onHide(event: any) { 
     this.visible = event;
+    this.loadPatientDetail();
   }
 
   onEdit() {
@@ -117,6 +120,14 @@ export class PatientDetailComponent implements OnInit {
     this.prescriptionFormVisible = false;
   }
 
+  validateFormData(): boolean {
+    let formValid = true;
+    if (this.preForm && !this.preForm.validation()) {
+      formValid = false;
+    }
+    return formValid;
+  }
+
   onCancel() {
     this.resetValue();
   }
@@ -128,7 +139,7 @@ export class PatientDetailComponent implements OnInit {
       note: this.prescriptionForm.note,
       patientPrescriptionInputModels: this.prescriptionForm.form
     }
-
+    if (!this.validateFormData()) return;
     this.patientService.addPrescriptionForPatient(form).subscribe({
       next: () => {
         this.resetValue();

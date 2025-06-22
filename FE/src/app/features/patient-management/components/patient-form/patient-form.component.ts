@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DoctorService } from '@services/doctor.service';
 import { ClinicalMessageService } from '@services/message.service';
 import { PatientService } from '@services/patient.service';
+import { PrescriptionFormComponent } from '../prescription-form/prescription-form.component';
 
 @Component({
   selector: 'app-patient-form',
@@ -10,6 +11,7 @@ import { PatientService } from '@services/patient.service';
   styleUrl: './patient-form.component.scss'
 })
 export class PatientFormComponent implements OnInit {
+  @ViewChild("prescriptionForm") prescriptionForm !: PrescriptionFormComponent
   @Output() onCloseDialog = new EventEmitter();
   @Input() isEdit = false;
   @Input() formData: any = {
@@ -37,7 +39,7 @@ export class PatientFormComponent implements OnInit {
   doctorsLookupData: any[] = [];
 
   selectedDoctor: any;
-
+  isFormRequried = false;
   constructor(
     private router: Router,
     private patientService: PatientService,
@@ -91,8 +93,8 @@ export class PatientFormComponent implements OnInit {
     ];
 
     this.doctors = [...this.doctorsLookupData];
-
     this.selectedDoctor = null;
+    this.isFormRequried = false;
     this.onCloseDialog.emit(false);
     if (!this.isEdit) {
       this.router.navigate(["/patients"]);
@@ -103,8 +105,27 @@ export class PatientFormComponent implements OnInit {
     this.resetValue();
   }
 
-  onSave() {
-    const form = {
+  isInvalid(value: any): boolean {
+    return value === null || value === undefined || value === '';
+  }
+
+  validateFormData(data: any): boolean {
+    let formValid = true;
+    if (this.prescriptionForm && !this.prescriptionForm.validation()) {
+      this.isFormRequried = true;
+      formValid = false;
+    }
+    for (let key in data) {
+      if (this.isInvalid(data[key])) {
+        this.isFormRequried = true;
+        formValid = false;;
+      }
+    }
+    return formValid;
+  }
+
+  setFormData() {
+    const formData: any = {
       id: 0,
       patientName: this.formData.patientName,
       gender: this.formData.gender.value,
@@ -113,11 +134,19 @@ export class PatientFormComponent implements OnInit {
       lowerLevel: this.formData.diagnostic.lowerLevel,
       medicalTreatmentDepartment: this.formData.diagnostic.department,
       treatmentIndication: this.formData.treatmentIndication,
-      doctorId: this.selectedDoctor.id,
-      note: this.formData.note,
+      doctorId: this.selectedDoctor ? this.selectedDoctor.id : null,
       patientPrescriptionInputModels: this.formData.prescriptionForm
     }
+    if (this.isEdit) {
+      formData.id = this.formData.id;
+    }
+    return formData;
+  }
 
+  onSave() {
+    const form: any = this.setFormData();
+    if (!this.validateFormData(form)) return; 
+    form.note = this.formData.note;
     this.patientService.createPatient(form).subscribe({
       next: () => {
         this.resetValue();
@@ -130,19 +159,9 @@ export class PatientFormComponent implements OnInit {
   }
 
   onEdit() {
-    const form = {
-      id: this.formData.id,
-      patientName: this.formData.patientName,
-      gender: this.formData.gender.value,
-      age: this.formData.age,
-      address: this.formData.address,
-      lowerLevel: this.formData.diagnostic.lowerLevel,
-      medicalTreatmentDepartment: this.formData.diagnostic.department,
-      treatmentIndication: this.formData.treatmentIndication,
-      doctorId: this.selectedDoctor.id,
-      note: this.formData.note,
-      patientPrescriptionInputModels: this.formData.prescriptionForm
-    }
+    const form: any = this.setFormData();
+    if (!this.validateFormData(form)) return; 
+    form.note = this.formData.note;
     this.patientService.updatePatient(form).subscribe({
       next: () => {
         this.resetValue();

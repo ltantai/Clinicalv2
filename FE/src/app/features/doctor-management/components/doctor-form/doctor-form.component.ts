@@ -18,7 +18,7 @@ export class DoctorFormComponent {
   };
 
   visible = false;
-
+  isFormRequried = false;
   constructor(
     private router: Router,
     private doctorService: DoctorService,
@@ -53,7 +53,24 @@ export class DoctorFormComponent {
     this.resetValue();
   }
 
+  isInvalid(value: any): boolean {
+    return value === null || value === undefined || value === '';
+  }
+
+  validateFormData(data: any): boolean {
+    for (let key in data) {
+      if (this.isInvalid(data[key])) {
+        console.log(`Invalid field: ${key}`);
+        this.isFormRequried = true;
+        return false;
+      }
+    }
+    this.isFormRequried = true;
+    return true;
+  }
+
   onSave() {
+    if (!this.validateFormData(this.formData)) return;
     this.doctorService.create(this.formData).subscribe({ 
       next: () => {
         this.resetValue();
@@ -66,6 +83,7 @@ export class DoctorFormComponent {
   }
 
   onEdit() {
+    if (!this.validateFormData(this.formData)) return;
     this.doctorService.update(this.formData).subscribe({
       next: () => {
         this.resetValue();
