@@ -18,6 +18,7 @@ namespace Clinical.Application.ViewModels
         public string? MedicalTreatmentDepartment { get; set; }
         public string? LowerLevel { get; set; }
         public string? TreatmentIndication { get; set; }
+        public string? Note { get; set; }
         public int DoctorId { get; set; }
         public DoctorViewModel? Doctor { get; set; }
         public ICollection<PatientPrescriptionViewModel>? PatientPrescriptions { get; set; }

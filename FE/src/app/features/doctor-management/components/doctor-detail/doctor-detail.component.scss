@@ -1,0 +1,20 @@
+.patient-detail-container {
+    background: white;
+    border-radius: 1rem;
+    padding: 1rem 2rem;
+    margin-top: 1rem;
+
+    .info-lbl {
+        font-size: 1.4rem;
+        color: var(--primary-color);
+        font-weight: 800;
+    }
+}
+
+::ng-deep {
+    .add-prescription-btn {
+        button {
+            height: 2rem;
+        }
+    }
+}

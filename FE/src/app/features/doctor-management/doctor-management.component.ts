@@ -39,7 +39,7 @@ export class DoctorManagementComponent {
         if (results.items) {
           const data = results.items.map((item: any, index: number) => ({
             id: item.id,
-            order: index + 1,
+            order: pageNumber > 1 ? ((pageNumber*10) + (index + 1)) : (index + 1),
             name: item.name ?? "",
             phoneNumber: item.phoneNumber,
             email: item.email,

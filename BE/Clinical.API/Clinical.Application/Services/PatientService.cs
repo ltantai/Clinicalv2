@@ -76,6 +76,7 @@ namespace Clinical.Application.Services
             newPatient.MedicalTreatmentDepartment = patient.MedicalTreatmentDepartment;
             newPatient.TreatmentIndication = patient.TreatmentIndication;
             newPatient.DoctorId = patient.DoctorId;
+            //newPatient.Note = patient.Note;
             newPatient = await _repository.AddAsync(newPatient);
 
             if (patient.PatientPrescriptionInputModels != null && patient.PatientPrescriptionInputModels.Any())
@@ -109,6 +110,7 @@ namespace Clinical.Application.Services
             existingPatient.Age = patient.Age ?? 1;
             existingPatient.Address = patient.Address;
             existingPatient.LowerLevel = patient.LowerLevel;
+            //existingPatient.Note = patient.Note;
             existingPatient.MedicalTreatmentDepartment = patient.MedicalTreatmentDepartment;
             existingPatient.TreatmentIndication = patient.TreatmentIndication;
             existingPatient.DoctorId = patient.DoctorId;

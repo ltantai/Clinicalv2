@@ -16,12 +16,10 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 @NgModule({
   declarations: [
-    AppComponent,
-    DoctorManagementComponent
+    AppComponent
   ],
   imports: [
     HttpClientModule,
@@ -37,8 +35,7 @@ import { MessageService } from 'primeng/api';
     InputIconModule,
     TagModule,
     FormsModule,
-    ProgressSpinnerModule,
-    ToastModule
+    ProgressSpinnerModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

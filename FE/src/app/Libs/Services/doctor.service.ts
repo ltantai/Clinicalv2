@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpWrapperService } from './http-wrapper.service';
+import { environment } from 'environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DoctorService {
-  private baseUrl = 'https://localhost:7129/api/doctors';
+  private baseUrl = `${environment.baseUrl}/doctors`;
 
   constructor(private http: HttpWrapperService) {}
 
@@ -25,11 +26,11 @@ export class DoctorService {
     return this.http.post(`${this.baseUrl}/add`, formData);
   }
 
-  update(id: number, formData: any){
-    return this.http.put(`${this.baseUrl}/${id}`, formData);
+  update(formData: any){
+    return this.http.put(`${this.baseUrl}/update`, formData);
   }
 
   delete(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+    return this.http.delete(`${this.baseUrl}/delete/${id}`);
   }
 }

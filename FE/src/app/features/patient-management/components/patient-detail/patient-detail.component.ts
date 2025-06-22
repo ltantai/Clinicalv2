@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { formatDate } from '@angular/common';
 import { PatientService } from '@services/patient.service';
 import { ClinicalMessageService } from '@services/message.service';
+import { PrescriptionFormComponent } from '../prescription-form/prescription-form.component';
 
 @Component({
   selector: 'app-patient-detail',
@@ -11,6 +12,7 @@ import { ClinicalMessageService } from '@services/message.service';
   styleUrl: './patient-detail.component.scss'
 })
 export class PatientDetailComponent implements OnInit {
+  @ViewChild("preForm") preForm !: PrescriptionFormComponent
   visible = false;
   prescriptionVisible = false;
   prescriptionFormVisible = false;
@@ -82,7 +84,10 @@ export class PatientDetailComponent implements OnInit {
     }
   }
 
-  onHide() { }
+  onHide(event: any) { 
+    this.visible = event;
+    this.loadPatientDetail();
+  }
 
   onEdit() {
     this.formData = {
@@ -91,6 +96,7 @@ export class PatientDetailComponent implements OnInit {
       gender: { value: this.dataSource.gender },
       age: Number(this.dataSource.age) ?? 0,
       address: this.dataSource.address,
+      note: this.dataSource.note,
       diagnostic: {
         lowerLevel: this.dataSource.lowerLevel,
         department: this.dataSource.medicalTreatmentDepartment
@@ -114,8 +120,16 @@ export class PatientDetailComponent implements OnInit {
     this.prescriptionFormVisible = false;
   }
 
-  onCancel() {
+  validateFormData(): boolean {
+    let formValid = true;
+    if (this.preForm && !this.preForm.validation()) {
+      formValid = false;
+    }
+    return formValid;
+  }
 
+  onCancel() {
+    this.resetValue();
   }
 
   onSave() {
@@ -125,7 +139,7 @@ export class PatientDetailComponent implements OnInit {
       note: this.prescriptionForm.note,
       patientPrescriptionInputModels: this.prescriptionForm.form
     }
-
+    if (!this.validateFormData()) return;
     this.patientService.addPrescriptionForPatient(form).subscribe({
       next: () => {
         this.resetValue();
