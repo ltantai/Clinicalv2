@@ -2,7 +2,10 @@
     <!-- Sidebar -->
     <div class="d-flex">
         <div *ngIf="isManagementMenuOpen" class="menu-group sidebar d-flex flex-column" >
-            <h3>Tam Binh Clinical</h3>
+            <!-- <h3>Tam Binh Clinical</h3> -->
+            <div class="logo">
+                <img src="assets/imgs/logoBsNhanNoBackground.png" alt="">
+            </div>
             <div class="tilte-header">Thống kê</div>
             <a routerLink="#" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                 <span class="pi pi-home"></span> Trang chủ
