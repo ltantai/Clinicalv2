@@ -52,11 +52,13 @@ body {
     padding: 20px;
   }
 
-  .sidebar h3 {
-    padding: 20px;
-    margin-bottom: 0;
-    //background-color: white;
-    background: linear-gradient(0deg, #e7eef0, transparent);
+  .sidebar .logo {
+    padding: 10px;
+    text-align: center;
+    img {
+      width: 10vw;
+      height: 10vh;
+    }
   }
 
   // Content 
