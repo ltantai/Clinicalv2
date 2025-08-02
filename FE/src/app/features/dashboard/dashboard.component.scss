@@ -1,0 +1,185 @@
+// .coming-soon-page {
+//   height: 90vh;
+//   color: white;
+// }
+
+// .countdown h2 {
+//   font-weight: 500;
+//   font-size: 2rem;
+// }
+
+
+/* Welcome Section */
+.welcome-section {
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.welcome-section p {
+  font-size: 1rem;
+  max-width: 65vw;
+  margin: 0 auto;
+  color: #444;
+  animation: fadeSlideIn 1.2s ease-out both;
+}
+
+/* Welcome Section with Animation */
+.welcome-section h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+  animation: fadeSlideIn 1.2s ease-out both;
+}
+
+/* Decorative underline effect */
+.welcome-section h2::after {
+  content: '';
+  position: absolute;
+  width: 10rem;
+  height: 4px;
+  background: var(--primary-background-color);
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  animation: underlineGrow 1.2s ease-out forwards;
+}
+
+
+.card-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Base Card Style */
+.card {
+  color: white;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 19rem !important;
+  border: none;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeSlideIn 0.8s ease-out forwards;
+}
+
+/* Delay animation for staggered reveal */
+.card:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.card:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.card:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.card:nth-child(4) {
+  animation-delay: 0.8s;
+}
+
+/* Title & Link Styling */
+.card h3,
+.card a {
+  color: white !important;
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.card a {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+/* Card Colors */
+.primary {
+  background: linear-gradient(45deg, #007bff, transparent);
+}
+
+.success {
+  background: linear-gradient(45deg, #28a745, transparent);
+}
+
+.warning {
+  background: linear-gradient(45deg, #ffc107, transparent);
+  color: #333;
+}
+
+.info {
+  background: linear-gradient(45deg, #17a2b8, transparent);
+}
+
+/* Animation Keyframes (reuse from earlier) */
+
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Underline grow effect */
+@keyframes underlineGrow {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+  100% {
+    width: 10rem;
+    opacity: 1;
+  }
+}
+
+
+// .card {
+//   color: white;
+//   padding: 20px;
+//   border-radius: 6px;
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//   width: 19rem !important;
+//   border: none;
+
+//   opacity: 1; /* Keep fully visible */
+//   animation: spinAndPulse 0.1s ease-in-out infinite;
+//   transform-origin: center center;
+// }
+
+// /* Optional stagger delay */
+// .card:nth-child(1) { animation-delay: 0s; }
+// .card:nth-child(2) { animation-delay: 0.2s; }
+// .card:nth-child(3) { animation-delay: 0.4s; }
+// .card:nth-child(4) { animation-delay: 0.6s; }
+
+// /* Smooth, continuous rotate + pulse */
+// @keyframes spinAndPulse {
+//   0% {
+//     transform: scale(1) rotate(0deg);
+//   }
+//   // 25% {
+//   //   transform: scale(1.03) rotate(90deg);
+//   // }
+//   // 50% {
+//   //   transform: scale(1.05) rotate(180deg);
+//   // }
+//   // 75% {
+//   //   transform: scale(1.03) rotate(270deg);
+//   // }
+//   100% {
+//     transform: scale(1) rotate(360deg);
+//   }
+// }

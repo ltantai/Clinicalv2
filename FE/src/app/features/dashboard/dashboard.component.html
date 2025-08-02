@@ -1,0 +1,40 @@
+<!-- <div class="coming-soon-page d-flex flex-column justify-content-center align-items-center text-center">
+  <div class="container">
+    <img src="assets/imgs/logoBsNhanNoBackground.png" width="100px" height="100px" alt="">
+    <h2 class="display-4 fw-bold">Trang chủ</h2> <span>(Coming Soon)</span>
+    <p class="lead"></p>
+  </div>
+</div> -->
+
+
+<!-- Top Navbar -->
+<!-- <header class="navbar">
+  <div class="navbar-left">
+    <span class="logo">III</span>
+    <span class="title">Facilities and infrastructure Sekolah Tinggi Teknologi Garut</span>
+  </div>
+  <div class="navbar-right">
+    <span class="user">Ridwan Setiawan ▾</span>
+  </div>
+</header> -->
+
+<!-- Welcome Section -->
+<section class="welcome-section">
+  <h2>Chào mừng, quản trị viên</h2>
+  <p>
+    Da liễu là chuyên ngành y học nghiên cứu, chẩn đoán và điều trị các bệnh lý liên quan đến da, tóc, móng ...
+    Các nguồn lực trong lĩnh vực da liễu như thuốc bôi, thiết bị điều trị bằng laser, phòng khám chuyên khoa và đội ngũ
+    bác sĩ chuyên môn cao
+    đóng vai trò quan trọng trong việc nâng cao chất lượng điều trị và chăm sóc da cho cộng đồng. <br> Bs. Lê Đạt Nhân
+  </p>
+</section>
+
+<!-- Dynamic Cards -->
+<div class="card-grid">
+  <div class="card" [ngClass]="card.type" *ngFor="let card of cards">
+    <div>
+      <h3>{{ card.title }}</h3>
+      <a [routerLink]="card.link">Xem chi tiết →</a>
+    </div>
+  </div>
+</div>
